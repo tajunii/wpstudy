@@ -46,11 +46,10 @@ function showPage(page){
 }
 
 function getStudyData(){
-
-    const words = wordData.filter(w => Number(w.week) === currentWeek);
-    const patterns = patternData.filter(p => Number(p.week) === currentWeek);
-
-    return { words, patterns };
+    return {
+        words: wordData,
+        patterns: patternData
+    };
 }
 
 // ====================
@@ -73,6 +72,17 @@ function showCard(){
 
     const study = getStudyData();
     const data = (mode === "word") ? study.words : study.patterns;
+
+if(!data || data.length === 0){
+    card.innerHTML = "데이터 없음";
+    return;
+}
+
+if(!data[currentIndex]){
+    card.innerHTML = "항목 없음";
+    return;
+}
+
     const item = data[currentIndex];
 
     if(mode === "word"){
