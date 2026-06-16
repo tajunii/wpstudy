@@ -2,9 +2,9 @@
 // 데이터
 // ====================
 
-let wordData = [];
+let wordData = (typeof localWordData !== "undefined") ? localWordData : [];
 
-let patternData = [];
+let patternData = (typeof localPatternData !== "undefined") ? localPatternData : [];
 
 // ====================
 // 상태
@@ -16,7 +16,7 @@ let currentIndex = 0;
 let quizData = [];
 let currentQuiz;
 let currentWeek = 1;
-let isDataReady = false;
+let isDataReady = (wordData.length > 0 || patternData.length > 0);
 
 // ====================
 // DOM
@@ -41,8 +41,16 @@ function showPage(page){
     });
 
     if(page === "menu") menuPage.classList.add("active");
-    if(page === "study") studyPage.classList.add("active");
-    if(page === "quiz") quizPage.classList.add("active");
+    if(page === "study") {
+        studyPage.classList.add("active");
+        showCard();
+    }
+    if(page === "quiz") {
+        quizPage.classList.add("active");
+        if(!currentQuiz) {
+            nextQuiz();
+        }
+    }
 }
 
 function getStudyData(){
@@ -208,27 +216,53 @@ function showAnswer(){
 // ====================
 
 async function loadData(){
+    // 로컬 백업 데이터가 존재하는 경우 즉시 초기화하여 앱이 멈추지 않게 함
+    if (isDataReady) {
+        buildQuiz();
+        showPage("menu");
+    }
 
-    const wordCSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRTUWrzsscnZ3sHRvSenqLY4o1c-mkvZLYV9GDTdhjvwkyBI7AYjkIRGFKX3Qjdftb7NL5m6HGnAYwS/pub?gid=0&single=true&output=csv";
-    const patternCSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRTUWrzsscnZ3sHRvSenqLY4o1c-mkvZLYV9GDTdhjvwkyBI7AYjkIRGFKX3Qjdftb7NL5m6HGnAYwS/pub?gid=97570951&single=true&output=csv";
+    try {
+        const wordCSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRTUWrzsscnZ3sHRvSenqLY4o1c-mkvZLYV9GDTdhjvwkyBI7AYjkIRGFKX3Qjdftb7NL5m6HGnAYwS/pub?gid=0&single=true&output=csv";
+        const patternCSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRTUWrzsscnZ3sHRvSenqLY4o1c-mkvZLYV9GDTdhjvwkyBI7AYjkIRGFKX3Qjdftb7NL5m6HGnAYwS/pub?gid=97570951&single=true&output=csv";
 
-    const wordRes = await fetch(wordCSV);
-    const wordText = await wordRes.text();
+        console.log("Fetching word CSV...");
+        const wordRes = await fetch(wordCSV);
+        if (!wordRes.ok) throw new Error(`단어 데이터를 가져오는데 실패했습니다: ${wordRes.status}`);
+        const wordText = await wordRes.text();
 
-    const patternRes = await fetch(patternCSV);
-    const patternText = await patternRes.text();
+        console.log("Fetching pattern CSV...");
+        const patternRes = await fetch(patternCSV);
+        if (!patternRes.ok) throw new Error(`문형 데이터를 가져오는데 실패했습니다: ${patternRes.status}`);
+        const patternText = await patternRes.text();
 
-    wordData = parseCSV(wordText);
-    patternData = parseCSV(patternText);
+        wordData = parseCSV(wordText);
+        patternData = parsePatternCSV(patternText);
 
-    buildQuiz();
-    isDataReady = true;
-    showPage("menu");
+        buildQuiz();
+        isDataReady = true;
+        
+        // 데이터가 새로 동기화되면 뷰를 업데이트함
+        const activePage = document.querySelector(".page.active");
+        if (activePage) {
+            if (activePage.id === "studyPage") showCard();
+            else if (activePage.id === "quizPage" && !currentQuiz) nextQuiz();
+        } else {
+            showPage("menu");
+        }
+        console.log("Data loaded and synced successfully from Google Sheets.");
+    } catch (error) {
+        console.warn("구글 스프레드시트 데이터 동기화 실패 (로컬 백업 데이터 사용):", error.message);
+        // 로컬 데이터도 없고 동기화도 실패한 경우에만 경고창 표시
+        if (!isDataReady) {
+            alert(`데이터를 로딩하는 중 오류가 발생했습니다.\n\n오류 내용: ${error.message}\n\n로컬 서버를 빌드하거나 브라우저 설정을 확인하세요.`);
+        }
+    }
 }
 
 function parsePatternCSV(text){
 
-    const rows = text.trim().split("\n").slice(1);
+    const rows = text.trim().split("\n").slice(1).filter(line => line.trim() !== "");
 
     return rows.map(line => {
 
@@ -252,7 +286,7 @@ function parsePatternCSV(text){
 
 function parseCSV(text){
 
-    const rows = text.trim().split("\n").slice(1);
+    const rows = text.trim().split("\n").slice(1).filter(line => line.trim() !== "");
 
     return rows.map(line => {
 
