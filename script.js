@@ -39,6 +39,13 @@ function showPage(page){
     document.querySelectorAll(".page").forEach(p=>{
         p.classList.remove("active");
     });
+    
+    // 네비게이션 버튼 활성화 스타일 업데이트
+    document.querySelectorAll("#nav button").forEach(btn => {
+        btn.classList.remove("active-nav");
+    });
+    const targetBtn = document.querySelector(`#nav button[onclick*="showPage('${page}')"]`);
+    if(targetBtn) targetBtn.classList.add("active-nav");
 
     if(page === "menu") menuPage.classList.add("active");
     if(page === "study") {
@@ -73,6 +80,21 @@ function setMode(m){
 
     mode = m;
     currentIndex = 0;
+    
+    // 탭 버튼 선택 스타일 적용
+    document.querySelectorAll(".tabs button").forEach(btn => {
+        btn.classList.remove("active-tab-word", "active-tab-pattern");
+    });
+    const tabWord = document.getElementById("tab-word");
+    const tabPattern = document.getElementById("tab-pattern");
+    if (m === "word" && tabWord) tabWord.classList.add("active-tab-word");
+    if (m === "pattern" && tabPattern) tabPattern.classList.add("active-tab-pattern");
+    
+    // 카드 Glow 모드 클래스 적용
+    if (card) {
+        card.className = (m === "word") ? "word-mode" : "pattern-mode";
+    }
+
     showCard();
 }
 
@@ -81,47 +103,60 @@ function showCard(){
     const study = getStudyData();
     const data = (mode === "word") ? study.words : study.patterns;
 
-if(!data || data.length === 0){
-    card.innerHTML = "데이터 없음";
-    return;
-}
+    if(!data || data.length === 0){
+        card.innerHTML = "데이터 없음";
+        return;
+    }
 
-if(!data[currentIndex]){
-    card.innerHTML = "항목 없음";
-    return;
-}
+    if(!data[currentIndex]){
+        card.innerHTML = "항목 없음";
+        return;
+    }
 
     const item = data[currentIndex];
 
     if(mode === "word"){
         card.innerHTML = `
-        <h2>${item.word} (${item.furigana})</h2>
-        ① ${item.meaning1}<br>
-        ② ${item.meaning2}
-        <hr>
-        ${item.example1}<br>
-        (${item.reading1})<br>
-        ${item.translation1}
-        <hr>
-        ${item.example2}<br>
-        (${item.reading2})<br>
-        ${item.translation2}
+        <div class="card-japanese">${item.word} <span>(${item.furigana})</span></div>
+        <div class="card-meanings">
+            <div class="meaning-item"><span class="meaning-badge">1</span> ${item.meaning1}</div>
+            ${item.meaning2 ? `<div class="meaning-item"><span class="meaning-badge">2</span> ${item.meaning2}</div>` : ''}
+        </div>
+        <div class="card-divider"></div>
+        <div class="card-examples">
+            <div class="example-block">
+                <div class="ex-ja">${item.example1}</div>
+                <div class="ex-reading">(${item.reading1})</div>
+                <div class="ex-ko">${item.translation1}</div>
+            </div>
+            <div class="example-block">
+                <div class="ex-ja">${item.example2}</div>
+                <div class="ex-reading">(${item.reading2})</div>
+                <div class="ex-ko">${item.translation2}</div>
+            </div>
+        </div>
         `;
     } else {
         card.innerHTML = `
-        <h2>${item.pattern}</h2>
-        ① ${item.meaning1}<br>
-        ② ${item.meaning2}
-        <hr>
-        ${item.usage}
-        <hr>
-        ${item.example1}<br>
-        (${item.reading1})<br>
-        ${item.translation1}
-        <hr>
-        ${item.example2}<br>
-        (${item.reading2})<br>
-        ${item.translation2}
+        <div class="card-japanese">${item.pattern}</div>
+        <div class="card-meanings">
+            <div class="meaning-item"><span class="meaning-badge">1</span> ${item.meaning1}</div>
+            ${item.meaning2 ? `<div class="meaning-item"><span class="meaning-badge">2</span> ${item.meaning2}</div>` : ''}
+        </div>
+        <div class="card-usage">💡 활용법: ${item.usage}</div>
+        <div class="card-divider"></div>
+        <div class="card-examples">
+            <div class="example-block">
+                <div class="ex-ja">${item.example1}</div>
+                <div class="ex-reading">(${item.reading1})</div>
+                <div class="ex-ko">${item.translation1}</div>
+            </div>
+            <div class="example-block">
+                <div class="ex-ja">${item.example2}</div>
+                <div class="ex-reading">(${item.reading2})</div>
+                <div class="ex-ko">${item.translation2}</div>
+            </div>
+        </div>
         `;
     }
 }
@@ -198,6 +233,7 @@ function nextQuiz(){
 
     question.innerHTML = currentQuiz.question;
     answer.innerHTML = "";
+    answer.classList.remove("reveal");
 }
 
 function showAnswer(){
@@ -205,10 +241,10 @@ function showAnswer(){
     if(!currentQuiz) return;
 
     answer.innerHTML = `
-        ${currentQuiz.answer}
-        <br>
-        (${currentQuiz.reading})
+        <div>${currentQuiz.answer}</div>
+        <div class="answer-reading">(${currentQuiz.reading})</div>
     `;
+    answer.classList.add("reveal");
 }
 
 // ====================
@@ -309,4 +345,3 @@ function parseCSV(text){
 }
 
 loadData();
-
