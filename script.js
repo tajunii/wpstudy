@@ -218,17 +218,11 @@ async function loadData(){
 
 function parsePatternCSV(text){
 
-    const rows = text
-        .trim()
-        .split("\n")
-        .slice(1);
+    const rows = text.trim().split("\n").slice(1);
 
     return rows.map(line => {
 
-        // CSV 안전 처리 (따옴표 제거 + 공백 정리)
-        const cols = line
-            .split(",")
-            .map(v => v.replace(/"/g, "").trim());
+        const cols = line.split(",").map(v => v.replace(/"/g,"").trim());
 
         return {
             pattern: cols[0] || "",
