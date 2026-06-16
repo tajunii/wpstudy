@@ -240,5 +240,29 @@ function parsePatternCSV(text){
     });
 }
 
+function parseCSV(text){
+
+    const rows = text.trim().split("\n").slice(1);
+
+    return rows.map(line => {
+
+        const cols = line.split(",").map(v => v.replace(/"/g,"").trim());
+
+        return {
+            word: cols[0] || "",
+            furigana: cols[1] || "",
+            meaning1: cols[2] || "",
+            meaning2: cols[3] || "",
+            example1: cols[4] || "",
+            reading1: cols[5] || "",
+            translation1: cols[6] || "",
+            example2: cols[7] || "",
+            reading2: cols[8] || "",
+            translation2: cols[9] || "",
+            week: cols[10] || ""
+        };
+    });
+}
+
 loadData();
 
