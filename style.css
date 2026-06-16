@@ -1,0 +1,54 @@
+body{
+    max-width:800px;
+    margin:auto;
+    padding:20px;
+    font-family:sans-serif;
+    line-height:1.8;
+}
+
+h1{
+    text-align:center;
+}
+
+button{
+    font-size:18px;
+    padding:10px 20px;
+    margin:10px;
+    cursor:pointer;
+}
+
+.page{
+    display:none;
+}
+
+.page.active{
+    display:block;
+}
+
+#nav{
+    position: sticky;
+    top: 0;
+    background: white;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+#card{
+    border:1px solid #ccc;
+    border-radius:10px;
+    padding:20px;
+    margin-top:20px;
+}
+
+#question{
+    font-size:28px;
+    margin:30px 0;
+}
+
+#answer{
+    margin-top:20px;
+}
+
+.navigation{
+    margin-top:20px;
+}

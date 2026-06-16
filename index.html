@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>일본어 공부</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>일본어 공부</h1>
+
+<!-- 공통 네비게이션 -->
+<div id="nav">
+    <button onclick="showPage('menu')">홈</button>
+    <button onclick="showPage('study')">공부</button>
+    <button onclick="showPage('quiz')">퀴즈</button>
+</div>
+
+<!-- 메인 -->
+<div id="menuPage" class="page active">
+    <h2>메뉴</h2>
+</div>
+
+<!-- 공부 -->
+<div id="studyPage" class="page hidden">
+
+    <div class="tabs">
+        <button onclick="setMode('word')">단어</button>
+        <button onclick="setMode('pattern')">문형</button>
+    </div>
+
+    <div id="card"></div>
+
+    <div class="navigation">
+        <button onclick="prevCard()">← 이전</button>
+        <button onclick="nextCard()">다음 →</button>
+    </div>
+
+</div>
+
+<!-- 퀴즈 -->
+<div id="quizPage" class="page hidden">
+
+    <div id="question"></div>
+
+    <button onclick="showAnswer()">정답 보기</button>
+
+    <div id="answer"></div>
+
+    <button onclick="nextQuiz()">다음 문제</button>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
