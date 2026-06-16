@@ -98,6 +98,36 @@ function setMode(m){
     showCard();
 }
 
+// ====================
+// TTS (음성 합성) 기능
+// ====================
+
+function speak(text, lang = 'ja-JP') {
+    if ('speechSynthesis' in window) {
+        // 기존 음성 중단
+        window.speechSynthesis.cancel();
+        
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = lang;
+        
+        // 일본어 전용 보이스 매칭 시도
+        const voices = window.speechSynthesis.getVoices();
+        const jpVoice = voices.find(v => v.lang.includes('ja-JP') || v.lang.includes('ja_JP'));
+        if (jpVoice) {
+            utterance.voice = jpVoice;
+        }
+        
+        window.speechSynthesis.speak(utterance);
+    } else {
+        console.warn("이 브라우저는 TTS(음성 합성)를 지원하지 않습니다.");
+    }
+}
+
+// 브라우저 보이스 로드 최적화 (일부 브라우저 대응)
+if ('speechSynthesis' in window) {
+    window.speechSynthesis.getVoices();
+}
+
 function showCard(){
 
     const study = getStudyData();
@@ -117,7 +147,7 @@ function showCard(){
 
     if(mode === "word"){
         card.innerHTML = `
-        <div class="card-japanese">${item.word} <span>(${item.furigana})</span></div>
+        <div class="card-japanese tts-clickable" onclick="speak('${item.word.replace(/'/g, "\\'")}')">${item.word} <span>(${item.furigana})</span></div>
         <div class="card-meanings">
             <div class="meaning-item"><span class="meaning-badge">1</span> ${item.meaning1}</div>
             ${item.meaning2 ? `<div class="meaning-item"><span class="meaning-badge">2</span> ${item.meaning2}</div>` : ''}
@@ -125,12 +155,12 @@ function showCard(){
         <div class="card-divider"></div>
         <div class="card-examples">
             <div class="example-block">
-                <div class="ex-ja">${item.example1}</div>
+                <div class="ex-ja tts-clickable" onclick="speak('${item.example1.replace(/'/g, "\\'")}')">${item.example1}</div>
                 <div class="ex-reading">(${item.reading1})</div>
                 <div class="ex-ko">${item.translation1}</div>
             </div>
             <div class="example-block">
-                <div class="ex-ja">${item.example2}</div>
+                <div class="ex-ja tts-clickable" onclick="speak('${item.example2.replace(/'/g, "\\'")}')">${item.example2}</div>
                 <div class="ex-reading">(${item.reading2})</div>
                 <div class="ex-ko">${item.translation2}</div>
             </div>
@@ -138,7 +168,7 @@ function showCard(){
         `;
     } else {
         card.innerHTML = `
-        <div class="card-japanese">${item.pattern}</div>
+        <div class="card-japanese tts-clickable" onclick="speak('${item.pattern.replace(/'/g, "\\'")}')">${item.pattern}</div>
         <div class="card-meanings">
             <div class="meaning-item"><span class="meaning-badge">1</span> ${item.meaning1}</div>
             ${item.meaning2 ? `<div class="meaning-item"><span class="meaning-badge">2</span> ${item.meaning2}</div>` : ''}
@@ -147,12 +177,12 @@ function showCard(){
         <div class="card-divider"></div>
         <div class="card-examples">
             <div class="example-block">
-                <div class="ex-ja">${item.example1}</div>
+                <div class="ex-ja tts-clickable" onclick="speak('${item.example1.replace(/'/g, "\\'")}')">${item.example1}</div>
                 <div class="ex-reading">(${item.reading1})</div>
                 <div class="ex-ko">${item.translation1}</div>
             </div>
             <div class="example-block">
-                <div class="ex-ja">${item.example2}</div>
+                <div class="ex-ja tts-clickable" onclick="speak('${item.example2.replace(/'/g, "\\'")}')">${item.example2}</div>
                 <div class="ex-reading">(${item.reading2})</div>
                 <div class="ex-ko">${item.translation2}</div>
             </div>
@@ -241,10 +271,13 @@ function showAnswer(){
     if(!currentQuiz) return;
 
     answer.innerHTML = `
-        <div>${currentQuiz.answer}</div>
+        <div class="tts-clickable" onclick="speak('${currentQuiz.answer.replace(/'/g, "\\'")}')">${currentQuiz.answer}</div>
         <div class="answer-reading">(${currentQuiz.reading})</div>
     `;
     answer.classList.add("reveal");
+    
+    // 정답 공개 시 음성 자동 재생 (공부 편의성)
+    speak(currentQuiz.answer);
 }
 
 // ====================
