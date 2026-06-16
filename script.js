@@ -216,33 +216,34 @@ async function loadData(){
     showPage("menu");
 }
 
-function parseCSV(text){
+function parsePatternCSV(text){
 
-    return text
+    const rows = text
         .trim()
         .split("\n")
-        .slice(1)
-        .map(line => {
+        .slice(1);
 
-            // 따옴표 제거 + 분리
-            const cols = line
-                .split(",")
-                .map(v => v.replace(/"/g, "").trim());
+    return rows.map(line => {
 
-            return {
-                word: cols[0],
-                furigana: cols[1],
-                meaning1: cols[2],
-                meaning2: cols[3],
-                example1: cols[4],
-                reading1: cols[5],
-                translation1: cols[6],
-                example2: cols[7],
-                reading2: cols[8],
-                translation2: cols[9],
-                week: cols[10]
-            };
-        });
+        // CSV 안전 처리 (따옴표 제거 + 공백 정리)
+        const cols = line
+            .split(",")
+            .map(v => v.replace(/"/g, "").trim());
+
+        return {
+            pattern: cols[0] || "",
+            meaning1: cols[1] || "",
+            meaning2: cols[2] || "",
+            usage: cols[3] || "",
+            example1: cols[4] || "",
+            reading1: cols[5] || "",
+            translation1: cols[6] || "",
+            example2: cols[7] || "",
+            reading2: cols[8] || "",
+            translation2: cols[9] || "",
+            week: cols[10] || ""
+        };
+    });
 }
 
 loadData();
