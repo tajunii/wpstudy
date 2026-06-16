@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>일본어 마스터 - TV Studio</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <h1>일본어 공부</h1>
+    <div class="header-right">
+        <!-- 주차 필터 드롭다운 -->
+        <div class="select-container">
+            <select id="weekSelect" onchange="changeWeek(this.value)">
+                <option value="all">전체보기</option>
+            </select>
+        </div>
+        <!-- 공통 네비게이션 -->
+        <div id="nav">
+            <button onclick="showPage('menu')" class="active-nav">홈</button>
+            <button onclick="showPage('study')">공부</button>
+            <button onclick="showPage('quiz')">퀴즈</button>
+        </div>
+    </div>
+</header>
+
+<main class="container">
+    <!-- 메인 대시보드 -->
+    <div id="menuPage" class="page active">
+        <div class="welcome-section">
+            <h2>안녕하세요! 오늘도 즐겁게 일본어를 공부해보세요.</h2>
+            <p>원하는 학습 모드를 선택해 주세요.</p>
+        </div>
+        <div class="dashboard-grid">
+            <div class="dash-card word-card" onclick="showPage('study'); setMode('word');">
+                <div class="dash-card-icon">📖</div>
+                <h3>단어 공부</h3>
+                <p>기초 단어와 예문, 발음을 원거리 TV 화면으로 선명하게 공부합니다.</p>
+                <span class="dash-card-btn">시작하기 →</span>
+            </div>
+            <div class="dash-card pattern-card" onclick="showPage('study'); setMode('pattern');">
+                <div class="dash-card-icon">💡</div>
+                <h3>문형 공부</h3>
+                <p>핵심 문법 패턴과 실제 문장의 쓰임새를 파악합니다.</p>
+                <span class="dash-card-btn">시작하기 →</span>
+            </div>
+            <div class="dash-card quiz-card" onclick="showPage('quiz')">
+                <div class="dash-card-icon">🎯</div>
+                <h3>퀴즈 도전</h3>
+                <p>번역문을 보고 원문과 독음을 맞히는 테스트에 도전합니다.</p>
+                <span class="dash-card-btn">도전하기 →</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 공부 -->
+    <div id="studyPage" class="page">
+        <div class="tabs">
+            <button id="tab-word" onclick="setMode('word')" class="active-tab-word">단어</button>
+            <button id="tab-pattern" onclick="setMode('pattern')">문형</button>
+        </div>
+
+        <div id="card" class="word-mode"></div>
+
+        <div class="navigation">
+            <button onclick="prevCard()">← 이전 카드</button>
+            <button onclick="nextCard()">다음 카드 →</button>
+        </div>
+    </div>
+
+    <!-- 퀴즈 -->
+    <div id="quizPage" class="page">
+        <div class="quiz-container">
+            <div id="question"></div>
+
+            <button class="quiz-action-btn" onclick="showAnswer()">정답 보기</button>
+
+            <div id="answer"></div>
+
+            <button class="quiz-nav-btn" onclick="nextQuiz()">다음 문제 →</button>
+        </div>
+    </div>
+</main>
+
+<script src="data.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
