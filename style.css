@@ -31,8 +31,6 @@ body {
     align-items: center;
     box-sizing: border-box;
     overflow-x: hidden;
-    height: 100vh;
-    overflow: hidden;
 }
 
 header {
@@ -144,12 +142,14 @@ h1 {
 }
 
 .container {
-    height: calc(100vh - 100px); /* 100px은 헤더 높이입니다 */
-    padding: 20px 40px;
-    box-sizing: border-box;
+    width: 100%;
+    max-width: 1400px;
+    flex: 1;
     display: flex;
     justify-content: center;
-    overflow: hidden; /* 이 줄이 스크롤을 막아줍니다 */
+    align-items: center;
+    padding: 30px 40px 60px 40px;
+    box-sizing: border-box;
 }
 
 .page {
@@ -158,11 +158,6 @@ h1 {
     height: 100%;
     /* TV에서의 부드러운 전환을 위해 하드웨어 가속 유도 */
     transform: translateZ(0); 
-/* 추가할 코드 3줄 */
-    display: flex;             /* 내용을 정렬하기 위해 flex 사용 */
-    flex-direction: column;    /* 세로로 정렬 */
-    justify-content: flex-start; /* 상단(위쪽)부터 차곡차곡 채우기 */
-    align-items: center;       /* 가로 중앙 정렬 */
 }
 
 .page.active {
