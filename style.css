@@ -2,88 +2,676 @@
 
 :root {
     --bg-color: #080710;
+    /* 블러 대신 사용할 불투명한 짙은 배경색으로 대체 */
     --card-bg: #131224; 
     --card-border: rgba(255, 255, 255, 0.12);
     --text-primary: #f8fafc;
     --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    
     --color-word: #c084fc; 
     --color-pattern: #34d399; 
     --color-quiz: #fbbf24; 
+    
+    /* 속도 체감을 위해 트랜지션 속도를 0.2초로 단축 */
     --transition-speed: 0.2s;
 }
 
-/* 1. 화면 고정 및 스크롤 제거 */
 body {
-    height: 100vh;
-    max-height: 100vh;
-    overflow: hidden;
     background-color: var(--bg-color);
-    margin: 0;
+    /* TV GPU 부담을 줄이기 위해 무거운 다중 그라데이션 단순화 */
+    background-image: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.05) 0%, transparent 80%);
+    color: var(--text-primary);
     font-family: 'Outfit', 'Noto Sans KR', 'Noto Sans JP', sans-serif;
-    display: flex;
-    flex-direction: column;
-}
-
-/* 2. 전체 레이아웃 (헤더 제외 나머지 꽉 채우기) */
-.container {
-    height: calc(100vh - 100px);
-    padding: 10px 40px 40px 40px;
-    display: flex;
-    justify-content: center;
-}
-
-/* 3. 페이지 내부 정렬 (위에서부터 쌓기) */
-.page.active {
-    height: 100%;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
-    gap: 15px;
+    box-sizing: border-box;
+    overflow-x: hidden;
 }
 
-/* 4. 카드 공통 및 문형 모드 압축 */
-#card {
+header {
     width: 100%;
-    max-width: 1100px;
-    flex: 1;
-    max-height: 55vh;
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    border-radius: 36px;
-    padding: 3vh 4vw;
+    max-width: 1400px;
     display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 40px 10px 40px;
     box-sizing: border-box;
 }
 
-/* 문형 모드일 때만 자동 압축 */
-#card.pattern-mode {
-    max-height: 58vh;
-    padding: 2vh 4vw;
+h1 {
+    font-size: 36px;
+    font-weight: 800;
+    margin: 0;
+    background: linear-gradient(135deg, #a855f7 0%, #06b6d4 50%, #10b981 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -1.5px;
 }
 
-.pattern-mode .card-japanese { font-size: 48px; }
-.pattern-mode .card-usage { font-size: 18px; padding: 8px 20px; }
-.pattern-mode .ex-ja { font-size: 24px; }
-.pattern-mode .ex-reading { font-size: 18px; }
-.pattern-mode .ex-ko { font-size: 19px; }
+#nav {
+    display: flex;
+    gap: 10px;
+    background: #181630;
+    border: 1px solid var(--card-border);
+    padding: 6px;
+    border-radius: 50px;
+}
 
-/* 5. 기타 요소 고정 */
-.tabs, .navigation { flex-shrink: 0; }
+#nav button {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 18px;
+    font-weight: 600;
+    padding: 10px 28px;
+    border-radius: 30px;
+    cursor: pointer;
+    /* all 대신 변화가 필요한 속성만 명시하여 연산 감소 */
+    transition: color var(--transition-speed) ease, background var(--transition-speed) ease;
+}
 
-/* 6. 퀴즈 페이지 */
-.quiz-container {
+#nav button:hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+#nav button.active-nav {
+    background: linear-gradient(135deg, #a855f7 0%, #6366f1 100%);
+    color: var(--text-primary);
+    /* 그림자 크기 축소 */
+    box-shadow: 0 4px 10px rgba(168, 85, 247, 0.3);
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.select-container {
+    position: relative;
+}
+
+#weekSelect {
+    background: #181630;
+    border: 1px solid var(--card-border);
+    color: var(--text-primary);
+    font-size: 17px;
+    font-weight: 600;
+    padding: 10px 45px 10px 20px;
+    border-radius: 50px;
+    cursor: pointer;
+    outline: none;
+    transition: border-color var(--transition-speed) ease;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+.select-container::after {
+    content: '';
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 8px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+    pointer-events: none;
+}
+
+.select-container:hover #weekSelect {
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+#weekSelect:focus {
+    border-color: #a855f7;
+}
+
+#weekSelect option {
+    background-color: #0b0a19;
+    color: var(--text-primary);
+    padding: 12px;
+}
+
+.container {
+    width: 100%;
+    max-width: 1400px;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 40px 60px 40px;
+    box-sizing: border-box;
+}
+
+.page {
+    display: none;
+    width: 100%;
+    height: 100%;
+    /* TV에서의 부드러운 전환을 위해 하드웨어 가속 유도 */
+    transform: translateZ(0); 
+}
+
+.page.active {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ====================
+   메인 대시보드
+   ==================== */
+.welcome-section {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.welcome-section h2 {
+    font-size: 38px;
+    font-weight: 700;
+    margin: 0 0 15px 0;
+    background: linear-gradient(135deg, #f8fafc 0%, #cbd5e1 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.welcome-section p {
+    font-size: 20px;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.dash-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 28px;
+    padding: 50px 35px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform var(--transition-speed) ease, border-color var(--transition-speed) ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.dash-card-icon {
+    font-size: 54px;
+    margin-bottom: 25px;
+    background: rgba(255, 255, 255, 0.04);
+    width: 90px;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.dash-card h3 {
+    font-size: 26px;
+    margin: 0 0 15px 0;
+    font-weight: 700;
+}
+
+.dash-card p {
+    font-size: 17px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0 0 35px 0;
+    flex-grow: 1;
+}
+
+.dash-card-btn {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.05);
+    padding: 12px 28px;
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* TV용 호버 효과 최적화 (거대한 그림자 효과 제거, 보더와 컬러 중심) */
+.dash-card.word-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--color-word);
+}
+.dash-card.word-card:hover .dash-card-icon {
+    background: rgba(168, 85, 247, 0.15);
+}
+.dash-card.word-card .dash-card-btn {
+    background: rgba(168, 85, 247, 0.1);
+    color: #c084fc;
+}
+.dash-card.word-card:hover .dash-card-btn {
+    background: #a855f7;
+    color: #fff;
+}
+
+.dash-card.pattern-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--color-pattern);
+}
+.dash-card.pattern-card:hover .dash-card-icon {
+    background: rgba(16, 185, 129, 0.15);
+}
+.dash-card.pattern-card .dash-card-btn {
+    background: rgba(16, 185, 129, 0.1);
+    color: #34d399;
+}
+.dash-card.pattern-card:hover .dash-card-btn {
+    background: #10b981;
+    color: #fff;
+}
+
+.dash-card.quiz-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--color-quiz);
+}
+.dash-card.quiz-card:hover .dash-card-icon {
+    background: rgba(245, 158, 11, 0.15);
+}
+.dash-card.quiz-card .dash-card-btn {
+    background: rgba(245, 158, 11, 0.1);
+    color: #fbbf24;
+}
+.dash-card.quiz-card:hover .dash-card-btn {
+    background: #f59e0b;
+    color: #fff;
+}
+
+/* ====================
+   학습 (공부) 페이지
+   ==================== */
+#studyPage {
     width: 100%;
     max-width: 1100px;
-    flex: 1;
-    max-height: 60vh;
+}
+
+.tabs {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 35px;
+}
+
+.tabs button {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--card-border);
+    color: var(--text-secondary);
+    padding: 14px 35px;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: background var(--transition-speed) ease, color var(--transition-speed) ease;
+}
+
+.tabs button:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+}
+
+.tabs button.active-tab-word {
+    background: rgba(168, 85, 247, 0.15);
+    border-color: #a855f7;
+    color: #d8b4fe;
+}
+
+.tabs button.active-tab-pattern {
+    background: rgba(16, 185, 129, 0.15);
+    border-color: #10b981;
+    color: #6ee7b7;
+}
+
+/* Card Styling */
+#card {
     background: var(--card-bg);
     border: 1px solid var(--card-border);
     border-radius: 36px;
+    padding: 60px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* 무거운 Box-shadow 제거 및 심플한 테두리 색상 처리 */
+#card.word-mode {
+    border-color: rgba(168, 85, 247, 0.5);
+}
+
+#card.pattern-mode {
+    border-color: rgba(16, 185, 129, 0.5);
+}
+
+/* Card Typography */
+.card-japanese {
+    font-size: 64px;
+    font-weight: 800;
+    margin: 0 0 25px 0;
+    color: var(--text-primary);
+    line-height: 1.25;
+}
+
+.card-japanese span {
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-left: 20px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.card-meanings {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 30px 0;
+}
+
+.meaning-item {
+    font-size: 24px;
+    color: #f1f5f9;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.meaning-badge {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-secondary);
+    font-size: 16px;
+    font-weight: 800;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.card-usage {
+    background: rgba(56, 189, 248, 0.06);
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    padding: 16px 28px;
+    border-radius: 14px;
+    font-size: 20px;
+    color: #38bdf8;
+    margin-bottom: 30px;
+    display: inline-block;
+}
+
+.card-divider {
+    border: 0;
+    height: 1px;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.1) 20%, rgba(255, 255, 255, 0.1) 80%, rgba(255, 255, 255, 0));
+    margin: 40px 0;
+}
+
+.card-examples {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+
+.example-block {
+    background: rgba(255, 255, 255, 0.015);
+    border-radius: 20px;
+    padding: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.ex-ja {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+    line-height: 1.4;
+}
+
+.ex-reading {
+    font-size: 20px;
+    color: #c084fc;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+.ex-ko {
+    font-size: 22px;
+    color: var(--text-secondary);
+}
+
+/* Card Navigation */
+.navigation {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 50px;
+    width: 100%;
+}
+
+.navigation button {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--card-border);
+    color: var(--text-primary);
+    padding: 16px 40px;
+    font-size: 19px;
+    font-weight: 600;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform var(--transition-speed) ease;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.navigation button:hover {
+    background: rgba(255, 255, 255, 0.06);
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* ====================
+   퀴즈 페이지
+   ==================== */
+#quizPage {
+    width: 100%;
+    max-width: 1100px;
+}
+
+.quiz-container {
+    background: var(--card-bg);
+    border: 1px solid rgba(245, 158, 11, 0.4);
+    border-radius: 36px;
+    padding: 60px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#question {
+    font-size: 46px;
+    font-weight: 800;
+    text-align: center;
+    color: #fbbf24;
+    margin-bottom: 40px;
+    min-height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.4;
+    max-width: 800px;
+}
+
+.quiz-action-btn {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    border: none;
+    color: #ffffff;
+    font-size: 22px;
+    font-weight: 700;
+    padding: 18px 45px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: transform var(--transition-speed) ease;
+}
+
+.quiz-action-btn:hover {
+    transform: translateY(-2px);
+}
+
+#answer {
+    margin: 40px 0;
+    font-size: 36px;
+    font-weight: 700;
+    text-align: center;
+    color: var(--text-primary);
+    min-height: 120px;
+    width: 100%;
+    max-width: 800px;
+    background: rgba(255, 255, 255, 0.015);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 24px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 12px;
+    padding: 25px;
+    box-sizing: border-box;
+    
+    /* 화면 전환 버벅임 원인인 무거운 투명도 애니메이션 제거하고 즉시 노출 */
+    display: none; 
+}
+
+#answer.reveal {
+    display: flex;
+    background: rgba(255, 255, 255, 0.025);
+    border-color: rgba(255, 255, 255, 0.06);
+}
+
+.answer-reading {
+    font-size: 24px;
+    color: #c084fc;
+    font-weight: 500;
+}
+
+.quiz-nav-btn {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--card-border);
+    color: var(--text-secondary);
+    font-size: 19px;
+    font-weight: 600;
+    padding: 15px 35px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: color var(--transition-speed) ease;
+    margin-top: 15px;
+}
+
+.quiz-nav-btn:hover {
+    color: var(--text-primary);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+/* ====================
+   TTS 스타일
+   ==================== */
+.tts-clickable {
+    cursor: pointer;
+}
+
+.tts-clickable::after {
+    content: " 🔊";
+    font-size: 0.6em;
+    opacity: 0.5;
+}
+
+/* =========================================
+   TV 화면 고정(No-Scroll) 최적화 덮어쓰기
+   ========================================= */
+
+/* 1. 화면 스크롤 원천 차단 */
+body {
+    height: 100vh;          /* 최소 높이가 아니라, 무조건 화면 높이 100%로 고정 */
+    max-height: 100vh;
+    overflow: hidden;       /* 화면 밖으로 나가는 내용 숨김 (스크롤바 제거) */
+}
+
+/* 2. 메인 컨테이너 크기 자동 계산 */
+.container {
+    /* 전체 100vh에서 헤더(약 100px)를 뺀 나머지 공간에 꽉 차게 맞춤 */
+    height: calc(100vh - 100px); 
+    padding: 10px 40px 40px 40px; 
+    overflow: hidden;
+    justify-content: flex-start; /* 중앙 정렬 대신 위부터 채움 */
+}
+
+/* 3. 각 페이지도 컨테이너 높이에 100% 맞춤 */
+.page.active {
+    height: 100%;
+    justify-content: center;
+}
+
+/* 4. 카드(단어/문형) 내부 여백 및 간격 축소 (넘침 방지) */
+#card {
+    height: 100%;           /* 카드가 남은 화면을 꽉 채우도록 */
+    max-height: 700px;      /* 단, 너무 길어지지 않게 제한 */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly; /* 내부 요소들을 균등하게 자동 배치 */
+    padding: 4vh 5vw;       /* px 대신 화면 비율(vh, vw) 단위 사용하여 유연성 확보 */
+}
+
+/* 5. 여백을 줄여서 한 화면에 압축 */
+.card-japanese {
+    margin: 0;
+}
+.card-meanings {
+    margin: 15px 0;
+}
+.card-divider {
+    margin: 20px 0;
+}
+.card-examples {
+    gap: 20px;
+}
+.example-block {
+    padding: 20px;
+}
+.navigation {
+    margin-top: 20px;
+}
+
+/* 6. 퀴즈 페이지 내부 요건 맞춤 */
+.quiz-container {
+    height: 100%;
+    max-height: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 4vh 5vw;
+}
+#question {
+    margin-bottom: 20px;
+    min-height: 100px;
+}
+#answer {
+    margin: 20px 0;
+    min-height: 100px;
 }
