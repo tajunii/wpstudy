@@ -35,6 +35,7 @@ const weekSelect = document.getElementById("weekSelect");
 // 페이지 전환 (핵심)
 // ====================
 
+// (수정된 코드)
 function showPage(page){
 
     document.querySelectorAll(".page").forEach(p=>{
@@ -55,9 +56,18 @@ function showPage(page){
     }
     if(page === "quiz") {
         quizPage.classList.add("active");
+        
+        // --- 수정된 부분: 퀴즈 페이지 진입 시 무조건 초기화 ---
+        // 만약 이미 진행 중인 퀴즈가 있었다면 화면만 닫아주고,
+        // 완전히 비어있다면 새 퀴즈를 불러옵니다.
+        if (answer) {
+            answer.classList.remove("reveal");
+        }
+        
         if(!currentQuiz) {
             nextQuiz();
         }
+        // -----------------------------------------------------
     }
 }
 
