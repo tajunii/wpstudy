@@ -305,12 +305,14 @@ h1 {
 #studyPage {
     width: 100%;
     max-width: 1100px;
+    display: flex;
+    flex-direction: column;
 }
 
 .tabs {
     display: flex;
     gap: 15px;
-    margin-bottom: 35px;
+    margin-bottom: 15px;
 }
 
 .tabs button {
@@ -628,34 +630,68 @@ body {
     justify-content: center;
 }
 
-/* 4. 카드(단어/문형) 내부 여백 및 간격 축소 (넘침 방지) */
+/* 공부 페이지: Grid로 탭/카드/네비 영역을 정확히 분리 */
+#studyPage.active {
+    display: grid;
+    grid-template-rows: auto 1fr auto; /* 탭=자동 | 카드=나머지 전부 | 네비=자동 */
+    align-items: start;
+    overflow: hidden;
+    justify-content: stretch;
+}
+
+/* 4. 카드(단어/문형) 내부: 할당된 높이를 반드시 지켜서 코에 담기 */
 #card {
-    height: 100%;           /* 카드가 남은 화면을 꽉 채우도록 */
-    max-height: 700px;      /* 단, 너무 길어지지 않게 제한 */
+    min-height: 0;          /* Grid 자식이 부모를 넘지 않도록 */
+    overflow: hidden;       /* 넘치는 콘텐츠 차단 */
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly; /* 내부 요소들을 균등하게 자동 배치 */
-    padding: 4vh 5vw;       /* px 대신 화면 비율(vh, vw) 단위 사용하여 유연성 확보 */
+    justify-content: space-evenly;
+    padding: 3vh 5vw;
 }
 
 /* 5. 여백을 줄여서 한 화면에 압축 */
 .card-japanese {
+    font-size: 52px;
     margin: 0;
 }
+.card-japanese span {
+    font-size: 22px;
+}
 .card-meanings {
-    margin: 15px 0;
+    margin: 8px 0;
+    gap: 8px;
+}
+.meaning-item {
+    font-size: 20px;
+}
+.card-usage {
+    font-size: 17px;
+    padding: 10px 20px;
+    margin-bottom: 10px;
 }
 .card-divider {
-    margin: 20px 0;
+    margin: 10px 0;
 }
 .card-examples {
-    gap: 20px;
+    gap: 15px;
 }
 .example-block {
-    padding: 20px;
+    padding: 14px;
+}
+.ex-ja {
+    font-size: 22px;
+    margin-bottom: 5px;
+}
+.ex-reading {
+    font-size: 16px;
+    margin-bottom: 6px;
+}
+.ex-ko {
+    font-size: 18px;
 }
 .navigation {
-    margin-top: 20px;
+    margin-top: 10px;
+    padding-bottom: 4px;
 }
 
 /* 6. 퀴즈 페이지 내부 요건 맞춤 */
