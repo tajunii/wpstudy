@@ -686,7 +686,7 @@ button#tab-pattern {
     font-size: 16px !important; 
     
     /* 3. 버튼을 아래로 충분히 내려서 잘리지 않게 합니다 */
-    margin-top: 18px !important; 
+    margin-top: 22px !important; 
     
     /* 4. 주변 요소들과 일렬로 예쁘게 정렬합니다 */
     vertical-align: middle !important; 
