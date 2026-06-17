@@ -628,10 +628,18 @@ body {
     justify-content: center;
 }
 
+/* 공부 페이지는 탭이 위에 있으므로 위부터 채움 (탭 잘림 방지) */
+#studyPage.active {
+    justify-content: flex-start;
+    overflow: hidden;
+}
+
 /* 4. 카드(단어/문형) 내부 여백 및 간격 축소 (넘침 방지) */
 #card {
-    height: 100%;           /* 카드가 남은 화면을 꽉 채우도록 */
-    max-height: 700px;      /* 단, 너무 길어지지 않게 제한 */
+    /* 탭(~65px) + 탭 마진(35px) + 네비(~80px) + 네비 마진(20px) 을 제외한 나머지 높이 */
+    flex: 1;
+    min-height: 0;          /* flex 자식이 부모를 넘지 않도록 */
+    max-height: 600px;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly; /* 내부 요소들을 균등하게 자동 배치 */
