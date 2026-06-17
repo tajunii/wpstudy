@@ -2,29 +2,25 @@
 
 :root {
     --bg-color: #080710;
-    --card-bg: rgba(255, 255, 255, 0.03);
-    --card-border: rgba(255, 255, 255, 0.08);
+    /* 블러 대신 사용할 불투명한 짙은 배경색으로 대체 */
+    --card-bg: #131224; 
+    --card-border: rgba(255, 255, 255, 0.12);
     --text-primary: #f8fafc;
     --text-secondary: #94a3b8;
     --text-muted: #64748b;
     
-    /* Neon glow colors */
-    --color-word: #c084fc; /* Light Violet */
-    --color-word-glow: rgba(168, 85, 247, 0.15);
-    --color-pattern: #34d399; /* Light Emerald */
-    --color-pattern-glow: rgba(16, 185, 129, 0.15);
-    --color-quiz: #fbbf24; /* Light Amber */
-    --color-quiz-glow: rgba(245, 158, 11, 0.15);
+    --color-word: #c084fc; 
+    --color-pattern: #34d399; 
+    --color-quiz: #fbbf24; 
     
-    --transition-speed: 0.3s;
+    /* 속도 체감을 위해 트랜지션 속도를 0.2초로 단축 */
+    --transition-speed: 0.2s;
 }
 
 body {
     background-color: var(--bg-color);
-    background-image: 
-        radial-gradient(circle at 10% 20%, rgba(168, 85, 247, 0.08) 0%, transparent 45%),
-        radial-gradient(circle at 90% 80%, rgba(16, 185, 129, 0.06) 0%, transparent 45%),
-        radial-gradient(circle at 50% 50%, rgba(245, 158, 11, 0.03) 0%, transparent 50%);
+    /* TV GPU 부담을 줄이기 위해 무거운 다중 그라데이션 단순화 */
+    background-image: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.05) 0%, transparent 80%);
     color: var(--text-primary);
     font-family: 'Outfit', 'Noto Sans KR', 'Noto Sans JP', sans-serif;
     margin: 0;
@@ -60,11 +56,10 @@ h1 {
 #nav {
     display: flex;
     gap: 10px;
-    background: rgba(255, 255, 255, 0.02);
+    background: #181630;
     border: 1px solid var(--card-border);
     padding: 6px;
     border-radius: 50px;
-    backdrop-filter: blur(10px);
 }
 
 #nav button {
@@ -76,7 +71,8 @@ h1 {
     padding: 10px 28px;
     border-radius: 30px;
     cursor: pointer;
-    transition: all var(--transition-speed) ease;
+    /* all 대신 변화가 필요한 속성만 명시하여 연산 감소 */
+    transition: color var(--transition-speed) ease, background var(--transition-speed) ease;
 }
 
 #nav button:hover {
@@ -87,7 +83,8 @@ h1 {
 #nav button.active-nav {
     background: linear-gradient(135deg, #a855f7 0%, #6366f1 100%);
     color: var(--text-primary);
-    box-shadow: 0 4px 20px rgba(168, 85, 247, 0.4);
+    /* 그림자 크기 축소 */
+    box-shadow: 0 4px 10px rgba(168, 85, 247, 0.3);
 }
 
 .header-right {
@@ -101,7 +98,7 @@ h1 {
 }
 
 #weekSelect {
-    background: rgba(255, 255, 255, 0.02);
+    background: #181630;
     border: 1px solid var(--card-border);
     color: var(--text-primary);
     font-size: 17px;
@@ -110,8 +107,7 @@ h1 {
     border-radius: 50px;
     cursor: pointer;
     outline: none;
-    transition: all var(--transition-speed) ease;
-    backdrop-filter: blur(10px);
+    transition: border-color var(--transition-speed) ease;
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -132,13 +128,11 @@ h1 {
 }
 
 .select-container:hover #weekSelect {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
 }
 
 #weekSelect:focus {
     border-color: #a855f7;
-    box-shadow: 0 0 15px rgba(168, 85, 247, 0.25);
 }
 
 #weekSelect option {
@@ -162,7 +156,8 @@ h1 {
     display: none;
     width: 100%;
     height: 100%;
-    animation: fadeIn 0.4s ease-out;
+    /* TV에서의 부드러운 전환을 위해 하드웨어 가속 유도 */
+    transform: translateZ(0); 
 }
 
 .page.active {
@@ -170,11 +165,6 @@ h1 {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(15px); }
-    to { opacity: 1; transform: translateY(0); }
 }
 
 /* ====================
@@ -215,24 +205,12 @@ h1 {
     padding: 50px 35px;
     text-align: center;
     cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    backdrop-filter: blur(20px);
+    transition: transform var(--transition-speed) ease, border-color var(--transition-speed) ease;
     display: flex;
     flex-direction: column;
     align-items: center;
     position: relative;
     overflow: hidden;
-}
-
-.dash-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at top right, rgba(255,255,255,0.03), transparent 70%);
-    pointer-events: none;
 }
 
 .dash-card-icon {
@@ -246,7 +224,6 @@ h1 {
     justify-content: center;
     border-radius: 50%;
     border: 1px solid rgba(255, 255, 255, 0.08);
-    transition: all 0.4s ease;
 }
 
 .dash-card h3 {
@@ -271,71 +248,55 @@ h1 {
     padding: 12px 28px;
     border-radius: 50px;
     border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: all 0.3s ease;
 }
 
-/* Hover effects with colored glow */
+/* TV용 호버 효과 최적화 (거대한 그림자 효과 제거, 보더와 컬러 중심) */
 .dash-card.word-card:hover {
-    transform: translateY(-8px);
-    border-color: rgba(168, 85, 247, 0.4);
-    box-shadow: 0 20px 40px rgba(168, 85, 247, 0.15), 0 0 1px rgba(168, 85, 247, 0.5) inset;
+    transform: translateY(-4px);
+    border-color: var(--color-word);
 }
 .dash-card.word-card:hover .dash-card-icon {
     background: rgba(168, 85, 247, 0.15);
-    border-color: rgba(168, 85, 247, 0.3);
-    transform: scale(1.1);
 }
 .dash-card.word-card .dash-card-btn {
     background: rgba(168, 85, 247, 0.1);
     color: #c084fc;
-    border-color: rgba(168, 85, 247, 0.2);
 }
 .dash-card.word-card:hover .dash-card-btn {
     background: #a855f7;
     color: #fff;
-    box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
 }
 
 .dash-card.pattern-card:hover {
-    transform: translateY(-8px);
-    border-color: rgba(16, 185, 129, 0.4);
-    box-shadow: 0 20px 40px rgba(16, 185, 129, 0.15), 0 0 1px rgba(16, 185, 129, 0.5) inset;
+    transform: translateY(-4px);
+    border-color: var(--color-pattern);
 }
 .dash-card.pattern-card:hover .dash-card-icon {
     background: rgba(16, 185, 129, 0.15);
-    border-color: rgba(16, 185, 129, 0.3);
-    transform: scale(1.1);
 }
 .dash-card.pattern-card .dash-card-btn {
     background: rgba(16, 185, 129, 0.1);
     color: #34d399;
-    border-color: rgba(16, 185, 129, 0.2);
 }
 .dash-card.pattern-card:hover .dash-card-btn {
     background: #10b981;
     color: #fff;
-    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
 }
 
 .dash-card.quiz-card:hover {
-    transform: translateY(-8px);
-    border-color: rgba(245, 158, 11, 0.4);
-    box-shadow: 0 20px 40px rgba(245, 158, 11, 0.15), 0 0 1px rgba(245, 158, 11, 0.5) inset;
+    transform: translateY(-4px);
+    border-color: var(--color-quiz);
 }
 .dash-card.quiz-card:hover .dash-card-icon {
     background: rgba(245, 158, 11, 0.15);
-    border-color: rgba(245, 158, 11, 0.3);
-    transform: scale(1.1);
 }
 .dash-card.quiz-card .dash-card-btn {
     background: rgba(245, 158, 11, 0.1);
     color: #fbbf24;
-    border-color: rgba(245, 158, 11, 0.2);
 }
 .dash-card.quiz-card:hover .dash-card-btn {
     background: #f59e0b;
     color: #fff;
-    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
 }
 
 /* ====================
@@ -361,7 +322,7 @@ h1 {
     font-weight: 600;
     border-radius: 14px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: background var(--transition-speed) ease, color var(--transition-speed) ease;
 }
 
 .tabs button:hover {
@@ -369,19 +330,16 @@ h1 {
     color: var(--text-primary);
 }
 
-/* Active Tab Styles */
 .tabs button.active-tab-word {
     background: rgba(168, 85, 247, 0.15);
     border-color: #a855f7;
     color: #d8b4fe;
-    box-shadow: 0 0 20px rgba(168, 85, 247, 0.25);
 }
 
 .tabs button.active-tab-pattern {
     background: rgba(16, 185, 129, 0.15);
     border-color: #10b981;
     color: #6ee7b7;
-    box-shadow: 0 0 20px rgba(16, 185, 129, 0.25);
 }
 
 /* Card Styling */
@@ -392,20 +350,15 @@ h1 {
     padding: 60px;
     width: 100%;
     box-sizing: border-box;
-    backdrop-filter: blur(20px);
-    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-    position: relative;
-    overflow: hidden;
 }
 
+/* 무거운 Box-shadow 제거 및 심플한 테두리 색상 처리 */
 #card.word-mode {
-    border-color: rgba(168, 85, 247, 0.3);
-    box-shadow: 0 30px 60px rgba(5, 4, 10, 0.6), 0 0 50px rgba(168, 85, 247, 0.08);
+    border-color: rgba(168, 85, 247, 0.5);
 }
 
 #card.pattern-mode {
-    border-color: rgba(16, 185, 129, 0.3);
-    box-shadow: 0 30px 60px rgba(5, 4, 10, 0.6), 0 0 50px rgba(16, 185, 129, 0.08);
+    border-color: rgba(16, 185, 129, 0.5);
 }
 
 /* Card Typography */
@@ -483,12 +436,6 @@ h1 {
     border-radius: 20px;
     padding: 30px;
     border: 1px solid rgba(255, 255, 255, 0.03);
-    transition: all 0.3s ease;
-}
-
-.example-block:hover {
-    background: rgba(255, 255, 255, 0.03);
-    border-color: rgba(255, 255, 255, 0.06);
 }
 
 .ex-ja {
@@ -529,7 +476,7 @@ h1 {
     font-weight: 600;
     border-radius: 50px;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform var(--transition-speed) ease;
     display: flex;
     align-items: center;
     gap: 12px;
@@ -537,13 +484,8 @@ h1 {
 
 .navigation button:hover {
     background: rgba(255, 255, 255, 0.06);
-    transform: translateY(-3px);
-    box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+    transform: translateY(-2px);
     border-color: rgba(255, 255, 255, 0.2);
-}
-
-.navigation button:active {
-    transform: translateY(-1px);
 }
 
 /* ====================
@@ -556,16 +498,11 @@ h1 {
 
 .quiz-container {
     background: var(--card-bg);
-    border: 1px solid rgba(245, 158, 11, 0.2);
-    box-shadow: 0 30px 60px rgba(5, 4, 10, 0.6), 0 0 50px rgba(245, 158, 11, 0.06);
+    border: 1px solid rgba(245, 158, 11, 0.4);
     border-radius: 36px;
     padding: 60px;
     width: 100%;
     box-sizing: border-box;
-    backdrop-filter: blur(20px);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 }
 
 #question {
@@ -579,7 +516,6 @@ h1 {
     align-items: center;
     justify-content: center;
     line-height: 1.4;
-    text-shadow: 0 0 25px rgba(245, 158, 11, 0.25);
     max-width: 800px;
 }
 
@@ -592,14 +528,11 @@ h1 {
     padding: 18px 45px;
     border-radius: 50px;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 10px 25px rgba(245, 158, 11, 0.35);
+    transition: transform var(--transition-speed) ease;
 }
 
 .quiz-action-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 15px 35px rgba(245, 158, 11, 0.5);
-    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    transform: translateY(-2px);
 }
 
 #answer {
@@ -621,14 +554,13 @@ h1 {
     gap: 12px;
     padding: 25px;
     box-sizing: border-box;
-    opacity: 0;
-    transform: translateY(15px);
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    
+    /* 화면 전환 버벅임 원인인 무거운 투명도 애니메이션 제거하고 즉시 노출 */
+    display: none; 
 }
 
 #answer.reveal {
-    opacity: 1;
-    transform: translateY(0);
+    display: flex;
     background: rgba(255, 255, 255, 0.025);
     border-color: rgba(255, 255, 255, 0.06);
 }
@@ -648,39 +580,24 @@ h1 {
     padding: 15px 35px;
     border-radius: 50px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: color var(--transition-speed) ease;
     margin-top: 15px;
 }
 
 .quiz-nav-btn:hover {
-    background: rgba(255, 255, 255, 0.06);
     color: var(--text-primary);
     border-color: rgba(255, 255, 255, 0.2);
-    transform: translateY(-2px);
 }
 
 /* ====================
-   TTS (음성 합성) 스타일
+   TTS 스타일
    ==================== */
 .tts-clickable {
     cursor: pointer;
-    transition: all 0.2s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
 }
 
 .tts-clickable::after {
-    content: "🔊";
-    font-size: 0.5em;
-    opacity: 0.4;
-    transition: opacity 0.2s ease;
-}
-
-.tts-clickable:hover {
-    color: #38bdf8 !important;
-}
-
-.tts-clickable:hover::after {
-    opacity: 1;
+    content: " 🔊";
+    font-size: 0.6em;
+    opacity: 0.5;
 }
