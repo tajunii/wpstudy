@@ -676,9 +676,18 @@ body {
     min-height: 100px;
 }
 
-/* 상단 메뉴 버튼 잘림 현상 해결을 위한 안전 조치 */
-button#tab-pattern.active-tab-pattern, 
+/* 단어 버튼과 문형 버튼 크기 조절 및 잘림 해결 */
+button#tab-word,
 button#tab-pattern {
-    margin-top: 15px !important; /* 위쪽 여백을 주어 버튼을 아래로 강제 이동 */
-    vertical-align: middle !important; /* 주변 요소들과 높이 정렬 맞춤 */
+    /* 1. 버튼 자체의 크기(상하좌우 여백)를 줄입니다 */
+    padding: 8px 24px !important; 
+    
+    /* 2. 글자 크기도 균형에 맞게 살짝 조절합니다 */
+    font-size: 16px !important; 
+    
+    /* 3. 버튼을 아래로 충분히 내려서 잘리지 않게 합니다 */
+    margin-top: 18px !important; 
+    
+    /* 4. 주변 요소들과 일렬로 예쁘게 정렬합니다 */
+    vertical-align: middle !important; 
 }
