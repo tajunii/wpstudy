@@ -305,12 +305,15 @@ h1 {
 #studyPage {
     width: 100%;
     max-width: 1100px;
+    display: flex;
+    flex-direction: column;
 }
 
 .tabs {
     display: flex;
     gap: 15px;
     margin-bottom: 35px;
+    flex-shrink: 0; /* 탭은 크기 고정 */
 }
 
 .tabs button {
@@ -632,14 +635,15 @@ body {
 #studyPage.active {
     justify-content: flex-start;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 /* 4. 카드(단어/문형) 내부 여백 및 간격 축소 (넘침 방지) */
 #card {
-    /* 탭(~65px) + 탭 마진(35px) + 네비(~80px) + 네비 마진(20px) 을 제외한 나머지 높이 */
-    flex: 1;
+    flex: 1 1 0;            /* 남은 공간만큼 늘어나되 필요시 줄어듦 */
     min-height: 0;          /* flex 자식이 부모를 넘지 않도록 */
-    max-height: 600px;
+    overflow-y: auto;       /* 카드 내부가 넘칠 경우 스크롤 */
     display: flex;
     flex-direction: column;
     justify-content: space-evenly; /* 내부 요소들을 균등하게 자동 배치 */
@@ -664,6 +668,7 @@ body {
 }
 .navigation {
     margin-top: 20px;
+    flex-shrink: 0; /* 네비게이션 버튼은 크기 고정, 카드에 밀리지 않음 */
 }
 
 /* 6. 퀴즈 페이지 내부 요건 맞춤 */
