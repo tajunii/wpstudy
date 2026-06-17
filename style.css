@@ -675,3 +675,10 @@ body {
     margin: 20px 0;
     min-height: 100px;
 }
+
+/* 상단 메뉴 버튼 잘림 현상 해결을 위한 안전 조치 */
+button#tab-pattern.active-tab-pattern, 
+button#tab-pattern {
+    margin-top: 15px !important; /* 위쪽 여백을 주어 버튼을 아래로 강제 이동 */
+    vertical-align: middle !important; /* 주변 요소들과 높이 정렬 맞춤 */
+}
