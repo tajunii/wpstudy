@@ -603,113 +603,74 @@ h1 {
 }
 
 /* =========================================
-   TV 화면 고정(No-Scroll) 최적화 덮어쓰기 (최종 완료판)
+   TV 화면 고정(No-Scroll) 최적화 덮어쓰기 (스크롤바 제거 버전)
    ========================================= */
 
-/* 1. 화면 전체 스크롤 원천 차단 */
 body {
     height: 100vh;          
     max-height: 100vh;
     overflow: hidden;       
 }
 
-/* 2. 메인 컨테이너 정렬 및 높이 고정 */
 .container {
     height: calc(100vh - 100px); 
     padding: 10px 40px 20px 40px; 
     overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    align-items: center !important;     /* 가로 중앙 정렬 */
-    justify-content: flex-start !important; /* 위에서부터 차곡차곡 쌓기 */
+    align-items: flex-start !important; 
+    justify-content: flex-start !important; 
 }
 
-/* 3. 활성화된 페이지가 컨테이너 전체를 쓰도록 설정 */
 .page.active {
-    width: 100%;
     height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center !important;
-    justify-content: flex-start !important; /* 위에서부터 탭 -> 카드 -> 버튼 순으로 정렬 */
-    padding-top: 5px;
+    width: 100%;
+    justify-content: flex-start !important; 
+    padding-top: 10px;
 }
 
-/* 4. 상단 탭과 하단 내비게이션 버튼이 찌그러지지 않도록 보호 */
 .tabs, .navigation {
     flex-shrink: 0 !important; 
 }
 
-/* 5. 카드 유연한 높이 설정 및 스크롤바 숨기기 기본값 */
+/* 카드 내부: 간격을 줄이고 스크롤바를 완전히 숨깁니다 */
 #card {
-    width: 100%;
-    flex: 1 1 auto;             /* 남은 화면 공간을 유연하게 채움 */
-    min-height: 0 !important;   /* 자식 요소 넘침 방지를 위한 필수 속성 */
-    max-height: 60vh !important; /* TV 화면에서 하단 버튼 공간을 절대 침범하지 않도록 제한 */
-    margin-bottom: 15px;
-    padding: 3vh 4vw !important;
-    border-radius: 36px;
+    flex: 1 1 auto;         
+    height: auto !important; 
+    min-height: 0 !important; 
+    max-height: 60vh !important; /* 하단 버튼 영역을 확보하기 위해 최대 높이 살짝 제한 */
+    
     display: flex;
     flex-direction: column;
+    justify-content: center; 
     
-    overflow-y: auto !important; /* 내용이 넘치면 카드 내부에서만 스크롤 허용 */
-    -ms-overflow-style: none;    /* IE/Edge 스크롤바 숨기기 */
-    scrollbar-width: none;       /* Firefox 스크롤바 숨기기 */
+    /* [수정] 위아래 패딩과 여백을 줄여 웬만하면 스크롤이 안 생기도록 압축 */
+    padding: 2vh 4vw !important; 
+    margin-bottom: 15px;    
+    
+    overflow-y: auto !important; 
+    
+    /* [핵심] 글자가 넘치더라도 TV 화면에서 스크롤바가 안 보이게 숨김 */
+    -ms-overflow-style: none;  /* IE 및 엣지 */
+    scrollbar-width: none;     /* 파이어폭스 */
 }
+
+/* 크롬, 사파리, 웹킷 기반 브라우저에서 스크롤바를 투명하게 제거 */
 #card::-webkit-scrollbar {
-    display: none !important;    /* Chrome/Safari/TV 브라우저 스크롤바 완전히 숨기기 */
-}
-
-/* 6. [단어 모드] 문형 카드와 동일한 디자인 스타일 적용 */
-#card.word-mode {
-    justify-content: flex-start !important;
-    gap: 1opx !important;
-    height: auto !important;
-}
-
-#card.word-mode .card-divider {
     display: none !important;
-
-#card.word-mode .card-japanese { 
-    font-size: 3rem !important;  /* 문형과 동일하게 통일 */
-    margin: 0 !important; 
 }
 
-#card.word-mode .card-meanings { 
-    margin: 5px 0 !important; 
-    font-size: 1.5rem !important; /* 필요시 뜻 글자 크기 조정 */
-}
+/* 카드 내부 구성품 간격 컴팩트하게 조정 */
+.card-japanese { margin: 0; }
+.card-meanings { margin: 8px 0 !important; }
+.card-divider { margin: 12px 0 !important; }
+.card-examples { gap: 12px !important; }
+.example-block { padding: 15px !important; } /* 예문 상자 여백 축소 */
+.navigation { margin-top: 15px; margin-bottom: 15px; }
 
-/* 7. [문형 모드] 내용이 많으므로 위에서부터 정렬하고 TV 맞춤형 여백 압축 */
-#card.pattern-mode {
-    justify-content: flex-start !important;
-    gap: 10px !important;        /* 촘촘하게 배열 */
-}
-.pattern-mode .card-japanese { 
-    font-size: 3rem !important;  /* 글자 크기 살짝 압축하여 공간 확보 */
-    margin: 0 !important; 
-}
-.pattern-mode .card-meanings { margin: 5px 0 !important; }
-.pattern-mode .card-usage { 
-    padding: 10px 20px !important; 
-    font-size: 18px !important; 
-    margin-bottom: 5px !important; 
-}
-.pattern-mode .card-divider { margin: 10px 0 !important; }
-.pattern-mode .card-examples { gap: 12px !important; }
-.pattern-mode .example-block { padding: 15px !important; }
-
-/* 8. 하단 내비게이션 여백 조정 */
-.navigation {
-    margin-top: 10px !important;
-    margin-bottom: 15px !important;
-}
-
-/* 9. 퀴즈 페이지 TV 최적화 */
+/* 퀴즈 페이지 스크롤바도 함께 제거 */
 .quiz-container {
     flex: 1 1 auto;
+    height: auto !important;
     min-height: 0 !important;
-    max-height: 60vh !important;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -718,6 +679,8 @@ body {
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
-.quiz-container::-webkit-scrollbar { display: none !important; }
+.quiz-container::-webkit-scrollbar {
+    display: none !important;
+}
 #question { margin-bottom: 20px; min-height: 100px; }
 #answer { margin: 20px 0; min-height: 100px; }
