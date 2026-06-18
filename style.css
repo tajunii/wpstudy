@@ -676,20 +676,22 @@ body {
     min-height: 100px;
 }
 
-/* 1. 단어/문형 버튼들을 담고 있는 부모 상자의 빗장 풀기 */
-div.tabs {
-    height: auto !important;         /* 높이를 고정하지 않고 자식 버튼 크기에 맞춤 */
-    overflow: visible !important;     /* 버튼이 위로 삐져나가도 절대 자르지 않음 */
-    padding-top: 15px !important;     /* 상단에 여유 공간을 주어 버튼을 자연스럽게 내림 */
-    display: flex !important;         /* 버튼들을 정렬하기 쉽게 만듦 */
-    align-items: center !important;   /* 버튼들을 세로 중앙으로 예쁘게 정렬 */
-}
-
-/* 2. 단어 및 문형 버튼 자체의 크기 밸런스 조정 */
+/* 1. 상단 메뉴 버튼들은 깔끔하게 기본 정렬 */
 button#tab-word,
 button#tab-pattern {
-    padding: 8px 24px !important;    /* 아담하고 보기 좋은 크기로 패딩 수정 */
-    font-size: 16px !important;      /* 글자 크기 조정 */
-    margin: 0 5px !important;        /* 버튼 사이의 좌우 간격만 살짝 부여 */
-    vertical-align: middle !important;
+    padding: 8px 24px !important; 
+    font-size: 16px !important; 
+    margin: 0 5px !important;
+}
+
+/* 2. 문형 스터디박스의 크기 한계를 정해 위아래 요소를 보호합니다 */
+div.card.pattern-mode {
+    /* 위쪽 메뉴와 약간의 간격만 유지 */
+    margin-top: 15px !important; 
+    
+    /* [핵심] 박스의 최대 높이를 브라우저 화면의 약 55% 수준으로 제한 */
+    max-height: 55vh !important; 
+    
+    /* 내용이 너무 많아져서 박스를 넘치면 내부에서만 스크롤바가 생기도록 함 */
+    overflow-y: auto !important; 
 }
