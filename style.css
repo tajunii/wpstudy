@@ -660,14 +660,21 @@ body {
     display: none !important;    /* Chrome/Safari/TV 브라우저 스크롤바 완전히 숨기기 */
 }
 
-/* 6. [단어 모드] 내용이 적으므로 상자 정중앙에 예쁘게 정렬 */
+/* 6. [단어 모드] 문형 카드와 동일한 디자인 스타일 적용 */
 #card.word-mode {
     justify-content: flex-start !important;
-    gap: 10px !important;        /* 요소들 사이의 적당한 수직 여백 */
+    gap: 10px !important;
 }
-#card.word-mode .card-japanese { margin-bottom: 10px; }
-#card.word-mode .card-meanings { margin: 10px 0; }
 
+#card.word-mode .card-japanese { 
+    font-size: 3rem !important;  /* 문형과 동일하게 통일 */
+    margin: 0 !important; 
+}
+
+#card.word-mode .card-meanings { 
+    margin: 5px 0 !important; 
+    font-size: 1.5rem !important; /* 필요시 뜻 글자 크기 조정 */
+}
 /* 7. [문형 모드] 내용이 많으므로 위에서부터 정렬하고 TV 맞춤형 여백 압축 */
 #card.pattern-mode {
     justify-content: flex-start !important;
