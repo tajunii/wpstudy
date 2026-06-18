@@ -675,20 +675,3 @@ body {
     margin: 20px 0;
     min-height: 100px;
 }
-
-/* 1. 버튼 크기 줄이기 */
-button#tab-word,
-button#tab-pattern {
-    padding: 8px 24px !important; 
-    font-size: 16px !important; 
-    margin-top: 5px !important;
-    vertical-align: middle !important;
-}
-
-/* 2. 버튼을 감싸는 상자가 내용을 자르지 못하게 방지 */
-button#tab-word-wrapper,
-button#tab-pattern-wrapper,
-.navbar-container, 
-.tab-container {
-    overflow: visible !important; /* 넘치는 부분이 잘리지 않고 보이게 함 */
-}
