@@ -663,7 +663,7 @@ body {
 /* 6. [단어 모드] 내용이 적으므로 상자 정중앙에 예쁘게 정렬 */
 #card.word-mode {
     justify-content: flex-start !important;
-    gap: 20px !important;        /* 요소들 사이의 적당한 수직 여백 */
+    gap: 10px !important;        /* 요소들 사이의 적당한 수직 여백 */
 }
 #card.word-mode .card-japanese { margin-bottom: 10px; }
 #card.word-mode .card-meanings { margin: 10px 0; }
