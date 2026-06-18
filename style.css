@@ -663,7 +663,8 @@ body {
 /* 6. [단어 모드] 문형 카드와 동일한 디자인 스타일 적용 */
 #card.word-mode {
     justify-content: flex-start !important;
-    gap: 10px !important;
+    gap: 15px !important;
+    height: auto !important;
 }
 
 #card.word-mode .card-divider {
@@ -678,6 +679,21 @@ body {
     margin: 5px 0 !important; 
     font-size: 1.5rem !important; /* 필요시 뜻 글자 크기 조정 */
 }
+
+/* 예문 영역 상단 붙이기 */
+#card.word-mode .card-examples {
+    display: flex !important;
+    flex-direction: row !important;         /* 가로 배열 유지 */
+    gap: 15px !important;
+    margin-top: 0 !important;
+    flex-grow: 0 !important;                /* 예문이 상자 하단까지 늘어나지 않게 함 */
+}
+
+/* 각 예문 박스 내부 여백 조절 */
+#card.word-mode .example-block {
+    padding: 10px !important;               /* 예문 내부 여백을 줄여서 공간 확보 */
+}
+
 /* 7. [문형 모드] 내용이 많으므로 위에서부터 정렬하고 TV 맞춤형 여백 압축 */
 #card.pattern-mode {
     justify-content: flex-start !important;
