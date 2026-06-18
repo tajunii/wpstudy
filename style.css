@@ -603,95 +603,101 @@ h1 {
 }
 
 /* =========================================
-   TV 화면 고정(No-Scroll) 최적화 덮어쓰기 (최종 수정본)
+   TV 화면 고정(No-Scroll) 최적화 덮어쓰기 (최종 완료판)
    ========================================= */
 
+/* 1. 화면 전체 스크롤 원천 차단 */
 body {
     height: 100vh;          
     max-height: 100vh;
     overflow: hidden;       
 }
 
+/* 2. 메인 컨테이너 정렬 및 높이 고정 */
 .container {
     height: calc(100vh - 100px); 
     padding: 10px 40px 20px 40px; 
     overflow: hidden;
-    align-items: flex-start !important; 
-    justify-content: flex-start !important; 
+    display: flex;
+    flex-direction: column;
+    align-items: center !important;     /* 가로 중앙 정렬 */
+    justify-content: flex-start !important; /* 위에서부터 차곡차곡 쌓기 */
 }
 
+/* 3. 활성화된 페이지가 컨테이너 전체를 쓰도록 설정 */
 .page.active {
-    height: 100%;
     width: 100%;
-    justify-content: flex-start !important; 
-    padding-top: 10px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center !important;
+    justify-content: flex-start !important; /* 위에서부터 탭 -> 카드 -> 버튼 순으로 정렬 */
+    padding-top: 5px;
 }
 
+/* 4. 상단 탭과 하단 내비게이션 버튼이 찌그러지지 않도록 보호 */
 .tabs, .navigation {
     flex-shrink: 0 !important; 
 }
 
-/* [기본 카드 설정] 상단 잘림을 막기 위해 기본 정렬을 위쪽(flex-start)으로 변경 */
+/* 5. 카드 유연한 높이 설정 및 스크롤바 숨기기 기본값 */
 #card {
-    flex: 1 1 auto;         
-    height: auto !important; 
-    min-height: 0 !important; 
-    max-height: 62vh !important; /* TV 화면에서 하단 버튼 공간을 절대 침범하지 않도록 제한 */
-    
+    width: 100%;
+    flex: 1 1 auto;             /* 남은 화면 공간을 유연하게 채움 */
+    min-height: 0 !important;   /* 자식 요소 넘침 방지를 위한 필수 속성 */
+    max-height: 60vh !important; /* TV 화면에서 하단 버튼 공간을 절대 침범하지 않도록 제한 */
+    margin-bottom: 15px;
+    padding: 3vh 4vw !important;
+    border-radius: 36px;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start !important; /* 위에서부터 정렬하여 상단 잘림 원천 차단 */
     
-    padding: 2vh 4vw !important; 
-    margin-bottom: 15px;    
-    overflow-y: auto !important; 
-    
-    -ms-overflow-style: none;  
-    scrollbar-width: none;     
+    overflow-y: auto !important; /* 내용이 넘치면 카드 내부에서만 스크롤 허용 */
+    -ms-overflow-style: none;    /* IE/Edge 스크롤바 숨기기 */
+    scrollbar-width: none;       /* Firefox 스크롤바 숨기기 */
 }
-#card::-webkit-scrollbar { display: none !important; }
+#card::-webkit-scrollbar {
+    display: none !important;    /* Chrome/Safari/TV 브라우저 스크롤바 완전히 숨기기 */
+}
 
-/* [단어 모드] 내용이 적으므로 기존처럼 예쁘게 수직 중앙 정렬 */
+/* 6. [단어 모드] 내용이 적으므로 상자 정중앙에 예쁘게 정렬 */
 #card.word-mode {
     justify-content: center !important;
+    gap: 20px !important;        /* 요소들 사이의 적당한 수직 여백 */
 }
+#card.word-mode .card-japanese { margin-bottom: 10px; }
+#card.word-mode .card-meanings { margin: 10px 0; }
 
-/* [문형 모드] 내용이 많으므로 위에서부터 정렬하고, TV 화면 맞춤형 여백 압축 */
+/* 7. [문형 모드] 내용이 많으므로 위에서부터 정렬하고 TV 맞춤형 여백 압축 */
 #card.pattern-mode {
     justify-content: flex-start !important;
-    gap: 1vh !important; /* 요소 간의 간격을 좁힘 */
+    gap: 10px !important;        /* 촘촘하게 배열 */
 }
-
-/* 문형 모드 내부 요소들을 TV 해상도에 맞게 콤팩트하게 조절 */
 .pattern-mode .card-japanese { 
-    font-size: 2.8rem !important; /* 글자 크기 살짝 압축 */
-    margin: 5px 0 0 0 !important; 
+    font-size: 3rem !important;  /* 글자 크기 살짝 압축하여 공간 확보 */
+    margin: 0 !important; 
 }
-.pattern-mode .card-meanings { 
-    margin: 4px 0 !important; 
-    font-size: 1.4rem !important;
+.pattern-mode .card-meanings { margin: 5px 0 !important; }
+.pattern-mode .card-usage { 
+    padding: 10px 20px !important; 
+    font-size: 18px !important; 
+    margin-bottom: 5px !important; 
 }
-.pattern-mode .card-divider { 
-    margin: 8px 0 !important; 
-}
-.pattern-mode .card-examples { 
-    gap: 8px !important; 
-}
-.pattern-mode .example-block { 
-    padding: 12px 20px !important; /* 예문 상자 상하 여백 축소 */
-    margin-bottom: 0 !important;
+.pattern-mode .card-divider { margin: 10px 0 !important; }
+.pattern-mode .card-examples { gap: 12px !important; }
+.pattern-mode .example-block { padding: 15px !important; }
+
+/* 8. 하단 내비게이션 여백 조정 */
+.navigation {
+    margin-top: 10px !important;
+    margin-bottom: 15px !important;
 }
 
-.navigation { 
-    margin-top: 10px !important; 
-    margin-bottom: 15px !important; 
-}
-
-/* 퀴즈 페이지 최적화 */
+/* 9. 퀴즈 페이지 TV 최적화 */
 .quiz-container {
     flex: 1 1 auto;
-    height: auto !important;
     min-height: 0 !important;
+    max-height: 60vh !important;
     display: flex;
     flex-direction: column;
     justify-content: center;
