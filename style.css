@@ -603,7 +603,7 @@ h1 {
 }
 
 /* =========================================
-   TV 화면 고정(No-Scroll) 최적화 덮어쓰기 (스크롤바 제거 버전)
+   TV 화면 고정(No-Scroll) 최적화 덮어쓰기 (최종 수정본)
    ========================================= */
 
 body {
@@ -631,42 +631,63 @@ body {
     flex-shrink: 0 !important; 
 }
 
-/* 카드 내부: 간격을 줄이고 스크롤바를 완전히 숨깁니다 */
+/* [기본 카드 설정] 상단 잘림을 막기 위해 기본 정렬을 위쪽(flex-start)으로 변경 */
 #card {
     flex: 1 1 auto;         
     height: auto !important; 
     min-height: 0 !important; 
-    max-height: 60vh !important; /* 하단 버튼 영역을 확보하기 위해 최대 높이 살짝 제한 */
+    max-height: 62vh !important; /* TV 화면에서 하단 버튼 공간을 절대 침범하지 않도록 제한 */
     
     display: flex;
     flex-direction: column;
-    justify-content: center; 
+    justify-content: flex-start !important; /* 위에서부터 정렬하여 상단 잘림 원천 차단 */
     
-    /* [수정] 위아래 패딩과 여백을 줄여 웬만하면 스크롤이 안 생기도록 압축 */
     padding: 2vh 4vw !important; 
     margin-bottom: 15px;    
-    
     overflow-y: auto !important; 
     
-    /* [핵심] 글자가 넘치더라도 TV 화면에서 스크롤바가 안 보이게 숨김 */
-    -ms-overflow-style: none;  /* IE 및 엣지 */
-    scrollbar-width: none;     /* 파이어폭스 */
+    -ms-overflow-style: none;  
+    scrollbar-width: none;     
+}
+#card::-webkit-scrollbar { display: none !important; }
+
+/* [단어 모드] 내용이 적으므로 기존처럼 예쁘게 수직 중앙 정렬 */
+#card.word-mode {
+    justify-content: center !important;
 }
 
-/* 크롬, 사파리, 웹킷 기반 브라우저에서 스크롤바를 투명하게 제거 */
-#card::-webkit-scrollbar {
-    display: none !important;
+/* [문형 모드] 내용이 많으므로 위에서부터 정렬하고, TV 화면 맞춤형 여백 압축 */
+#card.pattern-mode {
+    justify-content: flex-start !important;
+    gap: 1vh !important; /* 요소 간의 간격을 좁힘 */
 }
 
-/* 카드 내부 구성품 간격 컴팩트하게 조정 */
-.card-japanese { margin: 0; }
-.card-meanings { margin: 8px 0 !important; }
-.card-divider { margin: 12px 0 !important; }
-.card-examples { gap: 12px !important; }
-.example-block { padding: 15px !important; } /* 예문 상자 여백 축소 */
-.navigation { margin-top: 15px; margin-bottom: 15px; }
+/* 문형 모드 내부 요소들을 TV 해상도에 맞게 콤팩트하게 조절 */
+.pattern-mode .card-japanese { 
+    font-size: 2.8rem !important; /* 글자 크기 살짝 압축 */
+    margin: 5px 0 0 0 !important; 
+}
+.pattern-mode .card-meanings { 
+    margin: 4px 0 !important; 
+    font-size: 1.4rem !important;
+}
+.pattern-mode .card-divider { 
+    margin: 8px 0 !important; 
+}
+.pattern-mode .card-examples { 
+    gap: 8px !important; 
+}
+.pattern-mode .example-block { 
+    padding: 12px 20px !important; /* 예문 상자 상하 여백 축소 */
+    margin-bottom: 0 !important;
+}
 
-/* 퀴즈 페이지 스크롤바도 함께 제거 */
+.navigation { 
+    margin-top: 10px !important; 
+    margin-bottom: 15px !important; 
+}
+
+/* 퀴즈 페이지 최적화 */
 .quiz-container {
     flex: 1 1 auto;
     height: auto !important;
@@ -679,8 +700,6 @@ body {
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
-.quiz-container::-webkit-scrollbar {
-    display: none !important;
-}
+.quiz-container::-webkit-scrollbar { display: none !important; }
 #question { margin-bottom: 20px; min-height: 100px; }
 #answer { margin: 20px 0; min-height: 100px; }
