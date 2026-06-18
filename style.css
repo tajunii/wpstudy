@@ -666,9 +666,8 @@ body {
     gap: 10px !important;
 }
 
-#card.word-mode .card-usage {
+#card.word-mode .card-divider {
     display: none !important;
-}
 
 #card.word-mode .card-japanese { 
     font-size: 3rem !important;  /* 문형과 동일하게 통일 */
@@ -720,3 +719,17 @@ body {
 .quiz-container::-webkit-scrollbar { display: none !important; }
 #question { margin-bottom: 20px; min-height: 100px; }
 #answer { margin: 20px 0; min-height: 100px; }
+
+/* --- 아래 내용을 파일 맨 마지막에 추가하세요 --- */
+
+#card.word-mode .card-divider {
+    display: none !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+#card.word-mode .card-examples {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
