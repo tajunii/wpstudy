@@ -603,7 +603,7 @@ h1 {
 }
 
 /* =========================================
-   TV 화면 고정(No-Scroll) 최적화 덮어쓰기 (최종 수정판)
+   TV 화면 고정(No-Scroll) 최적화 덮어쓰기 (스크롤바 제거 버전)
    ========================================= */
 
 body {
@@ -612,16 +612,14 @@ body {
     overflow: hidden;       
 }
 
-/* 메인 컨테이너 정렬 강제 초기화 */
 .container {
     height: calc(100vh - 100px); 
     padding: 10px 40px 20px 40px; 
     overflow: hidden;
-    align-items: flex-start !important; /* 중앙 정렬 파괴, 위쪽 닻 내리기 */
+    align-items: flex-start !important; 
     justify-content: flex-start !important; 
 }
 
-/* 페이지 내부 요소 무조건 위에서 아래로 정렬 */
 .page.active {
     height: 100%;
     width: 100%;
@@ -629,35 +627,46 @@ body {
     padding-top: 10px;
 }
 
-/* 상단 메뉴와 하단 버튼의 영역을 절대 침범받지 않게 보호 */
 .tabs, .navigation {
-    flex-shrink: 0 !important; /* 덩치 큰 카드에 밀려 찌그러지는 현상 방지 */
+    flex-shrink: 0 !important; 
 }
 
-/* 카드 내부: 넘침 방지 마법의 속성 적용 */
+/* 카드 내부: 간격을 줄이고 스크롤바를 완전히 숨깁니다 */
 #card {
-    flex: 1 1 auto;         /* 남은 공간을 채우되 유동적으로 변함 */
+    flex: 1 1 auto;         
     height: auto !important; 
-    min-height: 0 !important; /* [핵심] 카드가 부모 상자를 뚫고 나가는 것을 원천 차단 */
-    max-height: none;       
+    min-height: 0 !important; 
+    max-height: 60vh !important; /* 하단 버튼 영역을 확보하기 위해 최대 높이 살짝 제한 */
     
     display: flex;
     flex-direction: column;
     justify-content: center; 
-    padding: 3vh 4vw;
-    margin-bottom: 20px;    
     
-    overflow-y: auto !important; /* 카드가 커지면 무조건 내부 스크롤 생성 */
+    /* [수정] 위아래 패딩과 여백을 줄여 웬만하면 스크롤이 안 생기도록 압축 */
+    padding: 2vh 4vw !important; 
+    margin-bottom: 15px;    
+    
+    overflow-y: auto !important; 
+    
+    /* [핵심] 글자가 넘치더라도 TV 화면에서 스크롤바가 안 보이게 숨김 */
+    -ms-overflow-style: none;  /* IE 및 엣지 */
+    scrollbar-width: none;     /* 파이어폭스 */
 }
 
-.card-japanese { margin: 0; }
-.card-meanings { margin: 15px 0; }
-.card-divider { margin: 20px 0; }
-.card-examples { gap: 20px; }
-.example-block { padding: 20px; }
-.navigation { margin-top: 20px; margin-bottom: 20px; }
+/* 크롬, 사파리, 웹킷 기반 브라우저에서 스크롤바를 투명하게 제거 */
+#card::-webkit-scrollbar {
+    display: none !important;
+}
 
-/* 퀴즈 페이지 내부 요건 맞춤 */
+/* 카드 내부 구성품 간격 컴팩트하게 조정 */
+.card-japanese { margin: 0; }
+.card-meanings { margin: 8px 0 !important; }
+.card-divider { margin: 12px 0 !important; }
+.card-examples { gap: 12px !important; }
+.example-block { padding: 15px !important; } /* 예문 상자 여백 축소 */
+.navigation { margin-top: 15px; margin-bottom: 15px; }
+
+/* 퀴즈 페이지 스크롤바도 함께 제거 */
 .quiz-container {
     flex: 1 1 auto;
     height: auto !important;
@@ -667,6 +676,11 @@ body {
     justify-content: center;
     padding: 4vh 5vw;
     overflow-y: auto !important;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.quiz-container::-webkit-scrollbar {
+    display: none !important;
 }
 #question { margin-bottom: 20px; min-height: 100px; }
 #answer { margin: 20px 0; min-height: 100px; }
