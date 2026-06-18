@@ -666,6 +666,10 @@ body {
     gap: 10px !important;
 }
 
+#card.word-mode .card-usage {
+    display: none !important;
+}
+
 #card.word-mode .card-japanese { 
     font-size: 3rem !important;  /* 문형과 동일하게 통일 */
     margin: 0 !important; 
