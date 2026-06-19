@@ -411,11 +411,11 @@ h1 {
 .card-usage {
     background: rgba(56, 189, 248, 0.06);
     border: 1px solid rgba(56, 189, 248, 0.2);
-    padding: 16px 28px;
+    padding: 6px 18px;
     border-radius: 14px;
-    font-size: 20px;
+    font-size: 18px;
     color: #38bdf8;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     display: inline-block;
 }
 
@@ -423,7 +423,7 @@ h1 {
     border: 0;
     height: 1px;
     background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.1) 20%, rgba(255, 255, 255, 0.1) 80%, rgba(255, 255, 255, 0));
-    margin: 15px 0;
+    margin: 5px 0;
 }
 
 .card-examples {
