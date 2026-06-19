@@ -363,7 +363,7 @@ h1 {
 
 /* Card Typography */
 .card-japanese {
-    font-size: 64px;
+    font-size: 50px;
     font-weight: 800;
     margin: 0 0 0px 0;
     color: var(--text-primary);
