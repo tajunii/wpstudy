@@ -373,7 +373,7 @@ h1 {
 .card-japanese span {
     font-size: 28px;
     font-weight: 500;
-    color: var(--text-secondary);
+    color: #8ecae6;
     margin-left: 20px;
     display: inline-block;
     vertical-align: middle;
