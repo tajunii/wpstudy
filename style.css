@@ -507,12 +507,12 @@ h1 {
 }
 
 #question {
-    font-size: 46px;
+    font-size: 54px;
     font-weight: 800;
     text-align: center;
     color: #fbbf24;
-    margin-bottom: 40px;
-    min-height: 150px;
+    margin-bottom: 20px;
+    min-height: 100px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -537,12 +537,12 @@ h1 {
 }
 
 #answer {
-    margin: 40px 0;
+    margin: 20px 0;
     font-size: 36px;
     font-weight: 700;
     text-align: center;
     color: var(--text-primary);
-    min-height: 120px;
+    min-height: 80px;
     width: 100%;
     max-width: 800px;
     background: rgba(255, 255, 255, 0.015);
@@ -553,7 +553,7 @@ h1 {
     justify-content: center;
     align-items: center;
     gap: 12px;
-    padding: 25px;
+    padding: 15px;
     box-sizing: border-box;
     
     /* 화면 전환 버벅임 원인인 무거운 투명도 애니메이션 제거하고 즉시 노출 */
