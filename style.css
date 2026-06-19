@@ -440,7 +440,7 @@ h1 {
 }
 
 .ex-ja {
-    font-size: 28px;
+    font-size: 20px;
     font-weight: 700;
     color: var(--text-primary);
     margin-bottom: 10px;
@@ -448,14 +448,14 @@ h1 {
 }
 
 .ex-reading {
-    font-size: 20px;
+    font-size: 16px;
     color: #c084fc;
     margin-bottom: 15px;
     font-weight: 500;
 }
 
 .ex-ko {
-    font-size: 22px;
+    font-size: 16px;
     color: var(--text-secondary);
 }
 
