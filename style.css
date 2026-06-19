@@ -690,5 +690,37 @@ body {
 }
 
 #card.pattern-mode {
-    max-height: 78vh !important;
+    max-height: 72vh !important;
+}
+
+/* ==========================
+   문형 화면 전용 압축
+   ========================== */
+
+/* 의미1, 의미2를 가로 배치 */
+#card.pattern-mode .card-meanings{
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin: 8px 0 !important;
+}
+
+/* 용법 아래 여백 축소 */
+#card.pattern-mode .card-usage{
+    margin-bottom: 10px;
+}
+
+/* 용법과 예문 사이 구분선 간격 축소 */
+#card.pattern-mode .card-divider{
+    margin: 10px 0 !important;
+}
+
+/* 예문 박스 사이 간격 축소 */
+#card.pattern-mode .card-examples{
+    gap: 6px !important;
+}
+
+/* 예문 박스 내부 여백 축소 */
+#card.pattern-mode .example-block{
+    padding: 10px !important;
 }
