@@ -365,7 +365,7 @@ h1 {
 .card-japanese {
     font-size: 64px;
     font-weight: 800;
-    margin: 0 0 25px 0;
+    margin: 0 0 0px 0;
     color: var(--text-primary);
     line-height: 1.25;
 }
