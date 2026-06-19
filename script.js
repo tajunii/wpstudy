@@ -175,12 +175,10 @@ function showCard(){
         <div class="card-examples">
             <div class="example-block">
                 <div class="ex-ja tts-clickable" onclick="speak('${item.example1.replace(/'/g, "\\'")}')">${item.example1}</div>
-                <div class="ex-reading">(${item.reading1})</div>
                 <div class="ex-ko">${item.translation1}</div>
             </div>
             <div class="example-block">
                 <div class="ex-ja tts-clickable" onclick="speak('${item.example2.replace(/'/g, "\\'")}')">${item.example2}</div>
-                <div class="ex-reading">(${item.reading2})</div>
                 <div class="ex-ko">${item.translation2}</div>
             </div>
         </div>

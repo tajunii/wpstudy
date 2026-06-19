@@ -459,6 +459,12 @@ h1 {
     color: var(--text-secondary);
 }
 
+/* 후리가나 */
+.furigana{
+    font-size:0.65em;
+    color:#888;
+}
+
 /* Card Navigation */
 .navigation {
     display: flex;
