@@ -662,3 +662,22 @@ body {
 /* 카드 내부 구성품 간격 컴팩트하게 조정 */
 .navigation { margin-top: 8px; margin-bottom: 5px; }
 
+/* 퀴즈 페이지 스크롤바도 함께 제거 */
+.quiz-container {
+    flex: 1 1 auto;
+    height: auto !important;
+    min-height: 0 !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 4vh 5vw;
+    overflow-y: auto !important;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.quiz-container::-webkit-scrollbar {
+    display: none !important;
+}
+#question { margin-bottom: 20px; min-height: 100px; }
+#answer { margin: 20px 0; min-height: 100px; }
+
