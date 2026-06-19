@@ -310,15 +310,15 @@ h1 {
 .tabs {
     display: flex;
     gap: 15px;
-    margin-bottom: 35px;
+    margin-bottom: 12px;
 }
 
 .tabs button {
     background: rgba(255, 255, 255, 0.02);
     border: 1px solid var(--card-border);
     color: var(--text-secondary);
-    padding: 14px 35px;
-    font-size: 18px;
+    padding: 8px 25px;
+    font-size: 16px;
     font-weight: 600;
     border-radius: 14px;
     cursor: pointer;
@@ -664,7 +664,7 @@ body {
 .card-divider { margin: 12px 0 !important; }
 .card-examples { gap: 12px !important; }
 .example-block { padding: 15px !important; } /* 예문 상자 여백 축소 */
-.navigation { margin-top: 15px; margin-bottom: 15px; }
+.navigation { margin-top: 8px; margin-bottom: 5px; }
 
 /* 퀴즈 페이지 스크롤바도 함께 제거 */
 .quiz-container {
@@ -684,3 +684,11 @@ body {
 }
 #question { margin-bottom: 20px; min-height: 100px; }
 #answer { margin: 20px 0; min-height: 100px; }
+
+#card.word-mode {
+    max-height: 60vh !important;
+}
+
+#card.pattern-mode {
+    max-height: 72vh !important;
+}
