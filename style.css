@@ -575,12 +575,6 @@ h1 {
     border-color: rgba(255, 255, 255, 0.06);
 }
 
-.answer-reading {
-    font-size: 24px;
-    color: #c084fc;
-    font-weight: 500;
-}
-
 .quiz-nav-btn {
     background: rgba(255, 255, 255, 0.02);
     border: 1px solid var(--card-border);
