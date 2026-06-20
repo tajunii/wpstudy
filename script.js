@@ -272,7 +272,7 @@ function buildQuiz(){
         quizData.push({
             question: p.translation2,
             answer: p.example2
-        });
+    });
     }
 
 });
@@ -296,7 +296,7 @@ function showAnswer(){
 
     answer.innerHTML = `
         <div class="tts-clickable" onclick="speak('${currentQuiz.answer.replace(/'/g, "\\'")}')">${currentQuiz.answer}</div>
-        <div class="answer-reading">(${currentQuiz.reading})</div>
+        
     `;
     answer.classList.add("reveal");
     
