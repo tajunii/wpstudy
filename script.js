@@ -246,16 +246,14 @@ function buildQuiz(){
     if(w.translation1){
         quizData.push({
             question:w.translation1,
-            answer:w.example1,
-            reading:w.reading1
+            answer:w.example1
         });
     }
 
     if(w.translation2){
         quizData.push({
             question:w.translation2,
-            answer:w.example2,
-            reading:w.reading2
+            answer:w.example2
         });
     }
 
@@ -266,16 +264,14 @@ function buildQuiz(){
     if (p.translation1 && p.example1) {
         quizData.push({
             question: p.translation1,
-            answer: p.example1,
-            reading: p.reading1
+            answer: p.example1
         });
     }
 
     if (p.translation2 && p.example2) {
         quizData.push({
             question: p.translation2,
-            answer: p.example2,
-            reading: p.reading2
+            answer: p.example2
         });
     }
 
