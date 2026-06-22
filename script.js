@@ -451,3 +451,16 @@ function parseCSV(text){
 }
 
 loadData();
+
+const homeBtn = document.getElementById("homeBtn");
+
+if (homeBtn) {
+
+    homeBtn.addEventListener("click", () => {
+
+        location.href =
+        "https://tajunii.github.io/study-home/";
+
+    });
+
+}
