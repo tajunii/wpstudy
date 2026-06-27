@@ -404,50 +404,52 @@ function changeWeek(val){
 
 function parsePatternCSV(text){
 
-    const rows = text.trim().split("\n").slice(1).filter(line => line.trim() !== "");
-
-    return rows.map(line => {
-
-        const cols = line.split(",").map(v => v.replace(/"/g,"").trim());
-
-        return {
-            pattern: cols[0] || "",
-            meaning1: cols[1] || "",
-            meaning2: cols[2] || "",
-            usage: cols[3] || "",
-            example1: cols[4] || "",
-            reading1: cols[5] || "",
-            translation1: cols[6] || "",
-            example2: cols[7] || "",
-            reading2: cols[8] || "",
-            translation2: cols[9] || "",
-            week: cols[10] || ""
-        };
+    const result = Papa.parse(text, {
+        header: false,
+        skipEmptyLines: true
     });
+
+    const rows = result.data.slice(1);
+
+    return rows.map(cols => ({
+        pattern: cols[0]?.trim() || "",
+        meaning1: cols[1]?.trim() || "",
+        meaning2: cols[2]?.trim() || "",
+        usage: cols[3]?.trim() || "",
+        example1: cols[4]?.trim() || "",
+        reading1: cols[5]?.trim() || "",
+        translation1: cols[6]?.trim() || "",
+        example2: cols[7]?.trim() || "",
+        reading2: cols[8]?.trim() || "",
+        translation2: cols[9]?.trim() || "",
+        week: cols[10]?.trim() || ""
+    }));
+
 }
 
 function parseCSV(text){
 
-    const rows = text.trim().split("\n").slice(1).filter(line => line.trim() !== "");
-
-    return rows.map(line => {
-
-        const cols = line.split(",").map(v => v.replace(/"/g,"").trim());
-
-        return {
-            word: cols[0] || "",
-            furigana: cols[1] || "",
-            meaning1: cols[2] || "",
-            meaning2: cols[3] || "",
-            example1: cols[4] || "",
-            reading1: cols[5] || "",
-            translation1: cols[6] || "",
-            example2: cols[7] || "",
-            reading2: cols[8] || "",
-            translation2: cols[9] || "",
-            week: cols[10] || ""
-        };
+    const result = Papa.parse(text, {
+        header: false,
+        skipEmptyLines: true
     });
+
+    const rows = result.data.slice(1);
+
+    return rows.map(cols => ({
+        word: cols[0]?.trim() || "",
+        furigana: cols[1]?.trim() || "",
+        meaning1: cols[2]?.trim() || "",
+        meaning2: cols[3]?.trim() || "",
+        example1: cols[4]?.trim() || "",
+        reading1: cols[5]?.trim() || "",
+        translation1: cols[6]?.trim() || "",
+        example2: cols[7]?.trim() || "",
+        reading2: cols[8]?.trim() || "",
+        translation2: cols[9]?.trim() || "",
+        week: cols[10]?.trim() || ""
+    }));
+
 }
 
 loadData();
