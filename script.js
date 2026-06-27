@@ -190,7 +190,7 @@ function showCard(){
             <div class="meaning-item"><span class="meaning-badge">1</span> ${item.meaning1}</div>
             ${item.meaning2 ? `<div class="meaning-item"><span class="meaning-badge">2</span> ${item.meaning2}</div>` : ''}
         </div>
-        <div class="card-usage">💡 활용법: ${item.usage}</div>
+        <div class="card-usage">💡 설명(활용): ${item.usage}</div>
         <div class="card-divider"></div>
         <div class="card-examples">
             <div class="example-block">
