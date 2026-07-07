@@ -1,377 +1,92 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TV Japanese Study Space</title>
-    <!-- 구글 폰트: 일본어 가독성에 최적화된 Noto Sans JP 및 UI용 Outfit -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
-    <!-- 아이콘 라이브러리 (FontAwesome) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <!-- 테일윈드 CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <style>
-        :root {
-            --bg-dark: #0a0f1d;          /* 베이스 배경 */
-            --bg-card: #131a2e;          /* 카드 영역 배경 */
-            --bg-active: #1e2947;        /* 활성화/포커스 영역 */
-            --text-primary: #ffffff;     /* 메인 텍스트 */
-            --text-muted: #8e9bb5;       /* 설명 및 비활성 텍스트 */
-            --accent: #00ffd2;           /* 초점 및 후리가나 포인트 컬러 */
-            --accent-warm: #ffb703;      /* 후리가나 전용 고대비 골드 옐로우 */
-            --border-color: #222f4c;     /* 경계선 */
-        }
-
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-primary);
-            font-family: 'Outfit', 'Noto Sans JP', sans-serif;
-            overflow: hidden;
-        }
-
-        /* TV 모니터 가로 레이아웃에 가독성을 최적화한 콤팩트 폰트 스펙 */
-        .japanese-sentence {
-            font-size: 22px;               
-            line-height: 2.1;              
-            letter-spacing: 0.05em;
-            color: #e5e9f0;
-        }
-
-        /* 한글 해설 (들여쓰기 없이 원문 바로 밑에 정렬) */
-        .korean-sentence {
-            font-size: 16px;               
-            line-height: 1.5;
-            letter-spacing: 0.03em;
-            color: #94a3b8;
-            transition: all 0.3s ease;
-        }
-
-        /* 후리가나(루비 문자) 전용 스타일링 */
-        ruby {
-            ruby-position: over;
-            margin: 0 1px;
-        }
-
-        ruby rt {
-            font-size: 0.52em;             
-            color: var(--accent-warm);     
-            font-weight: 500;
-            letter-spacing: 0px;
-            padding-bottom: 2px;
-            user-select: none;             
-        }
-
-        /* 후리가나 숨김 상태 클래스 */
-        .hide-furigana ruby rt {
-            display: none !important;
-        }
-
-        /* 한글 번역 숨김 상태 클래스 */
-        .hide-translation .korean-sentence {
-            display: none !important;
-        }
-
-        /* TV 리모컨 포커스 하이라이트 효과 */
-        .focusable:focus, .focusable.focused-node {
-            border-color: var(--accent) !important;
-            background-color: var(--bg-active) !important;
-            box-shadow: 0 0 15px rgba(0, 255, 210, 0.3);
-            transform: scale(1.03);
-            outline: none;
-        }
-
-        /* 스크롤바 커스터마이징 */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--border-color);
-            border-radius: 3px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--text-muted);
-        }
-    </style>
+    <title>일본어 마스터 - TV Studio</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="w-screen h-screen flex justify-center items-center p-4">
+<body>
 
-    <div class="w-full h-full max-w-[1400px] flex flex-col gap-4 bg-[#131a2e] border-2 border-[#222f4c] rounded-2xl p-5 shadow-2xl relative overflow-hidden">
-        
-        <div class="flex flex-wrap items-center justify-between gap-4 pb-3 border-b-2 border-[#222f4c] shrink-0">
-            
-            <!-- 슬림 커스텀 오디오 컨트롤러 -->
-            <div class="flex items-center gap-4 bg-[#1a243f] border border-[#2d3d66] rounded-xl px-4 py-1.5 flex-grow max-w-2xl">
-                <div class="flex items-center gap-2">
-                    <button id="audio-back" class="focusable w-8 h-8 rounded-full bg-[#222f4c] border border-[#2d3d66] flex items-center justify-center text-xs transition-all duration-150" tabindex="0" title="10초 뒤로">
-                        <i class="fa-solid fa-backward-step"></i>
-                    </button>
-                    <button id="audio-play" class="focusable w-9 h-9 rounded-full bg-[#00ffd2] text-[#0a0f1d] flex items-center justify-center text-sm font-bold transition-all duration-150" tabindex="0" title="재생/일시정지">
-                        <i class="fa-solid fa-play"></i>
-                    </button>
-                    <button id="audio-forward" class="focusable w-8 h-8 rounded-full bg-[#222f4c] border border-[#2d3d66] flex items-center justify-center text-xs transition-all duration-150" tabindex="0" title="10초 앞으로">
-                        <i class="fa-solid fa-forward-step"></i>
-                    </button>
-                </div>
-                
-                <div class="flex-grow flex items-center gap-3">
-                    <div class="flex-grow h-1.5 bg-white/10 rounded-full overflow-hidden cursor-pointer relative" id="progress-bg">
-                        <div class="h-full w-0 bg-gradient-to-r from-[#00ffd2] to-[#00b4d8] rounded-full transition-all duration-100" id="progress-fill"></div>
-                    </div>
-                    <div class="text-[11px] font-mono text-slate-400 flex gap-1 shrink-0">
-                        <span id="time-current">00:00</span>
-                        <span>/</span>
-                        <span id="time-total">00:00</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 기능 조작 토글 버튼 그룹 -->
-            <div class="flex items-center gap-2">
-                <button id="btn-toggle-furigana" class="focusable flex items-center gap-2 px-3 py-1.5 bg-[#1a243f] border border-[#2d3d66] rounded-lg text-xs font-semibold text-white transition-all" tabindex="0">
-                    <i class="fa-solid fa-eye-slash text-[#00ffd2]"></i>
-                    <span>후리가나 숨기기</span>
-                </button>
-                <button id="btn-toggle-translation" class="focusable flex items-center gap-2 px-3 py-1.5 bg-[#1a243f] border border-[#2d3d66] rounded-lg text-xs font-semibold text-white transition-all" tabindex="0">
-                    <i class="fa-solid fa-language text-[#00ffd2]"></i>
-                    <span>한글 해설 숨기기</span>
-                </button>
-            </div>
+<header>
+    <h1>일본어 공부</h1>
+    <div class="header-right">
+        <!-- 주차 필터 드롭다운 -->
+        <div class="select-container">
+            <select id="weekSelect" onchange="changeWeek(this.value)">
+                <option value="all">전체보기</option>
+            </select>
         </div>
+        <!-- 공통 네비게이션 -->
+        <div id="nav">
+            <button id="homeBtn" title="메인 화면"> 🏠 </button> 
+            <button onclick="showPage('menu')" class="active-nav">홈</button>
+            <button onclick="showPage('study')">공부</button>
+            <button onclick="showPage('quiz')">퀴즈</button>
+        </div>
+    </div>
+</header>
 
-        <div id="content-container" class="flex-grow flex flex-col md:flex-row gap-6 overflow-hidden">
-            
-            <!-- 왼쪽: 사진 갤러리 영역 (비율 16:9 완벽 고정) -->
-            <!-- w-[30%] 정도로 넓혀서 사진이 찌그러지지 않고 시원하게 보이게 설정 -->
-            <div id="image-sidebar" class="w-full md:w-[32%] flex flex-col gap-4 shrink-0 overflow-y-auto pr-1">
-                
-                <!-- 사진 1 (16:9 비율) -->
-                <div class="image-wrapper w-full aspect-video rounded-xl overflow-hidden border border-[#222f4c] bg-[#1a243f] shrink-0 shadow-lg">
-                    <img id="article-img-1" src="images/photo1.jpg" class="w-full h-full object-cover" alt="학습 사진 1" onerror="handleImageError(this, 'images/photo.jpg')">
-                </div>
-                
-                <!-- 사진 2 (16:9 비율) -->
-                <div class="image-wrapper w-full aspect-video rounded-xl overflow-hidden border border-[#222f4c] bg-[#1a243f] shrink-0 shadow-lg">
-                    <img id="article-img-2" src="images/photo2.jpg" class="w-full h-full object-cover" alt="학습 사진 2" onerror="handleImageError(this)">
-                </div>
-                
-                <!-- 사진 3 (16:9 비율) -->
-                <div class="image-wrapper w-full aspect-video rounded-xl overflow-hidden border border-[#222f4c] bg-[#1a243f] shrink-0 shadow-lg">
-                    <img id="article-img-3" src="images/photo3.jpg" class="w-full h-full object-cover" alt="학습 사진 3" onerror="handleImageError(this)">
-                </div>
+<main class="container">
+    <!-- 메인 대시보드 -->
+    <div id="menuPage" class="page active">
+        <div class="welcome-section">
+            <h2>안녕하세요! 오늘도 즐겁게 일본어를 공부해보세요.</h2>
+            <p>원하는 학습 모드를 선택해 주세요.</p>
+        </div>
+        <div class="dashboard-grid">
+            <div class="dash-card word-card" onclick="showPage('study'); setMode('word');">
+                <div class="dash-card-icon">📖</div>
+                <h3>단어 공부</h3>
+                <p>기초 단어와 예문, 발음을 원거리 TV 화면으로 선명하게 공부합니다.</p>
+                <span class="dash-card-btn">시작하기 →</span>
             </div>
-
-            <div class="flex-grow flex flex-col gap-4 overflow-y-auto pr-2">
-                
-                <!-- 제목란: 후리가나 없이 깔끔한 텍스트 -->
-                <div class="border-b border-[#222f4c] pb-3 shrink-0">
-                    <h1 class="text-2xl font-bold leading-normal tracking-wide text-white">
-                        平均気温18.9度！涼やかな夏を過ごせるニセコ
-                    </h1>
-                </div>
-
-                <!-- 1:1 교대 매핑 기사 본문 영역 -->
-                <div class="space-y-6 pb-6">
-                    
-                    <div class="sentence-pair border-b border-[#222f4c]/20 pb-4">
-                        <div class="japanese-sentence">
-                            <ruby>北海道<rt>ほっかいどう</rt></ruby>を<ruby>代表<rt>だいひょう</rt></ruby>するリゾート<ruby>地<rt>ち</rt></ruby>として<ruby>知<rt>し</rt></ruby>られるニセコ。<ruby>冬<rt>ふゆ</rt></ruby>のパウダースノーのイメージが<ruby>強<rt>つよ</rt></ruby>いエリアですが、<ruby>実<rt>じつ</rt></ruby>は<ruby>緑<rt>みどり</rt></ruby>あふれる<ruby>夏<rt>なつ</rt></ruby>も<ruby>魅力<rt>みりょく</rt></ruby>が<ruby>満載<rt>まんさい</rt></ruby>です。
-                        </div>
-                        <div class="korean-sentence mt-1.5">
-                            홋카이도를 대표하는 리조트지로 알려진 니세코. 겨울의 파우더 스노우 이미지가 강한 지역이지만, 사실 녹음이 우거진 여름도 매력이 가득합니다.
-                        </div>
-                    </div>
-
-                    <div class="sentence-pair border-b border-[#222f4c]/20 pb-4">
-                        <div class="japanese-sentence">
-                            <ruby>倶知安<rt>くっちゃん</rt></ruby><ruby>町<rt>ちょう</rt></ruby>・ニセコ<ruby>町<rt>ちょう</rt></ruby>・<ruby>蘭越<rt>らんこし</rt></ruby><ruby>町<rt>ちょう</rt></ruby>からなるニセコエリアの<ruby>夏<rt>なつ</rt></ruby>の<ruby>平均<rt>へいきん</rt></ruby><ruby>気温<rt>きおん</rt></ruby>は18.9<ruby>度<rt>ど</rt></ruby>。
-                        </div>
-                        <div class="korean-sentence mt-1.5">
-                            굿찬초, 니세코초, 란코시초로 이루어진 니세코 지역의 여름 평균 기온은 18.9도입니다.
-                        </div>
-                    </div>
-
-                    <div class="sentence-pair border-b border-[#222f4c]/20 pb-4">
-                        <div class="japanese-sentence">
-                            7<ruby>月<rt>がつ</rt></ruby>の<ruby>日中<rt>にっちゅう</rt></ruby><ruby>最高<rt>さいこう</rt></ruby><ruby>気温<rt>きおん</rt></ruby>は24.4<ruby>度<rt>ど</rt></ruby>、<ruby>最<rt>もっと</rt></ruby>も<ruby>暑<rt>あつ</rt></ruby>い8<ruby>月<rt>がつ</rt></ruby>でも<ruby>最高<rt>さいこう</rt></ruby><ruby>気温<rt>きおん</rt></ruby>は25.4<ruby>度<rt>ど</rt></ruby>ほどと、<ruby>都市部<rt>としぶ</rt></ruby>の<ruby>猛暑<rt>もうしょ</rt></ruby>とは<ruby>違<rt>ちが</rt></ruby>った<ruby>快適<rt>かいてき</rt></ruby>な<ruby>環境<rt>かんきょう</rt></ruby>で<ruby>過<rt>す</rt></ruby>ごせます。
-                        </div>
-                        <div class="korean-sentence mt-1.5">
-                            7월의 낮 최고 기온은 24.4도, 가장 더운 8월에도 최고 기온은 25.4도 정도로, 도시의 혹서와는 다른 쾌적한 환경에서 보낼 수 있습니다.
-                        </div>
-                    </div>
-
-                    <div class="sentence-pair border-b border-[#222f4c]/20 pb-4">
-                        <div class="japanese-sentence">
-                            さらに、<ruby>北海道<rt>ほっかいどう</rt></ruby>には<ruby>梅雨<rt>つゆ</rt></ruby>がなく、7<ruby>月<rt>がつ</rt></ruby>には<ruby>日<rt>ひ</rt></ruby>の<ruby>出<rt>で</rt></ruby>が<ruby>午前<rt>ごぜん</rt></ruby>4<ruby>時台<rt>じだい</rt></ruby>、<ruby>日没<rt>にちぼつ</rt></ruby>は19<ruby>時<rt>じ</rt></ruby><ruby>過<rt>す</rt></ruby>ぎと<ruby>日照<rt>にっしょう</rt></ruby><ruby>時間<rt>じかん</rt></ruby>が<ruby>長<rt>なが</rt></ruby>いのも<ruby>特徴<rt>とくちょう</rt></ruby>。
-                        </div>
-                        <div class="korean-sentence mt-1.5">
-                            게다가 홋카이도에는 장마가 없고, 7월에는 해돋이가 오전 4시 대, 일몰은 19시가 넘어 일조 시간이 긴 것도 특징입니다.
-                        </div>
-                    </div>
-
-                    <div class="sentence-pair border-b border-[#222f4c]/20 pb-4">
-                        <div class="japanese-sentence">
-                            <ruby>澄<rt>す</rt></ruby>んだ<ruby>空気<rt>くうき</rt></ruby>と<ruby>爽<rt>さわ</rt></ruby>やかな<ruby>気候<rt>きこう</rt></ruby>の<ruby>中<rt>なか</rt></ruby>、ゆったりとした<ruby>夏<rt>なつ</rt></ruby><ruby>時間<rt>じかん</rt></ruby>を<ruby>満喫<rt>まんきつ</rt></ruby>できます。
-                        </div>
-                        <div class="korean-sentence mt-1.5">
-                            맑은 공기와 상쾌한 기후 속에서 느긋한 여름 시간을 만끽할 수 있습니다.
-                        </div>
-                    </div>
-
-                    <div class="sentence-pair border-b border-[#222f4c]/20 pb-4">
-                        <div class="japanese-sentence">
-                            「<ruby>蝦夷富士<rt>えぞふじ</rt></ruby>」の<ruby>愛称<rt>あいしょう</rt></ruby>で<ruby>親<rt>した</rt></ruby>しまれる<ruby>羊蹄山<rt>ようていざん</rt></ruby>は、<ruby>標高<rt>ひょうこう</rt></ruby>1,898mの<ruby>日本<rt>にほん</rt></ruby><ruby>百名山<rt>ひゃくめいざん</rt></ruby>のひとつ。
-                        </div>
-                        <div class="korean-sentence mt-1.5">
-                            '에조후지'라는 애칭으로 친숙한 요테이산은 해발 1,898m의 일본 백명산 중 하나입니다.
-                        </div>
-                    </div>
-
-                    <div class="sentence-pair pb-4">
-                        <div class="japanese-sentence">
-                            <ruby>夏<rt>なつ</rt></ruby>には<ruby>標高<rt>ひょうこう</rt></ruby>1,700m<ruby>以上<rt>いじょう</rt></ruby>の<ruby>高山<rt>こうざん</rt></ruby><ruby>帯<rt>たい</rt></ruby>で80〜100<ruby>種類<rt>しゅるい</rt></ruby>もの<ruby>高山<rt>こうざん</rt></ruby><ruby>植物<rt>しょくぶつ</rt></ruby>が<ruby>花<rt>はな</rt></ruby>を<ruby>咲<rt>さ</rt></ruby>かせ、<ruby>短<rt>みじか</rt></ruby>い<ruby>季節<rt>きせつ</rt></ruby>だけの<ruby>美<rt>うつく</rt></ruby>しい<ruby>風景<rt>ふうけい</rt></ruby>を<ruby>楽<rt>たの</rt></ruby>しめます。
-                        </div>
-                        <div class="korean-sentence mt-1.5">
-                            여름에는 해발 1,700m 이상의 고산대에서 80~100종류나 되는 고산식물이 꽃을 피워, 짧은 계절만의 아름다운 풍경을 즐길 수 있습니다.
-                        </div>
-                    </div>
-
-                </div>
+            <div class="dash-card pattern-card" onclick="showPage('study'); setMode('pattern');">
+                <div class="dash-card-icon">💡</div>
+                <h3>문형 공부</h3>
+                <p>핵심 문법 패턴과 실제 문장의 쓰임새를 파악합니다.</p>
+                <span class="dash-card-btn">시작하기 →</span>
+            </div>
+            <div class="dash-card quiz-card" onclick="showPage('quiz')">
+                <div class="dash-card-icon">🎯</div>
+                <h3>퀴즈 도전</h3>
+                <p>번역문을 보고 원문과 독음을 맞히는 테스트에 도전합니다.</p>
+                <span class="dash-card-btn">도전하기 →</span>
             </div>
         </div>
     </div>
 
-    <audio id="main-audio" src="audio/audio.mp3" style="display: none;"></audio>
+    <!-- 공부 -->
+    <div id="studyPage" class="page">
+        <div class="tabs">
+            <button id="tab-word" onclick="setMode('word')" class="active-tab-word">단어</button>
+            <button id="tab-pattern" onclick="setMode('pattern')">문형</button>
+        </div>
 
-    <script>
-        let isFuriganaHidden = false;
-        let isTranslationHidden = false;
+        <div id="card" class="word-mode"></div>
 
-        const audio = document.getElementById('main-audio');
-        const playBtn = document.getElementById('audio-play');
-        const progressBar = document.getElementById('progress-fill');
-        const progressBg = document.getElementById('progress-bg');
-        const timeCurrent = document.getElementById('time-current');
-        const timeTotal = document.getElementById('time-total');
-        
-        const toggleFuriganaBtn = document.getElementById('btn-toggle-furigana');
-        const toggleTranslationBtn = document.getElementById('btn-toggle-translation');
-        const contentContainer = document.getElementById('content-container');
+        <div class="navigation">
+            <button onclick="prevCard()">← 이전 카드</button>
+            <button onclick="nextCard()">다음 카드 →</button>
+        </div>
+    </div>
 
-        // 사진 파일 없을 시 박스 자체를 투명화 (16:9 공간 차지 안하도록 완전 제거)
-        function handleImageError(img, fallbackSrc) {
-            if (img.id === 'article-img-1' && fallbackSrc && !img.dataset.attemptedFallback) {
-                img.dataset.attemptedFallback = "true";
-                img.src = fallbackSrc;
-                return;
-            }
-            const wrapper = img.closest('.image-wrapper');
-            if (wrapper) wrapper.style.display = 'none';
-        }
+    <!-- 퀴즈 -->
+    <div id="quizPage" class="page">
+        <div class="quiz-container">
+            <div id="question"></div>
 
-        function formatTime(seconds) {
-            if (isNaN(seconds)) return "00:00";
-            const mins = Math.floor(seconds / 60);
-            const secs = Math.floor(seconds % 60);
-            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-        }
+            <button class="quiz-action-btn" onclick="showAnswer()">정답 보기</button>
 
-        playBtn.addEventListener('click', () => {
-            if (audio.paused) {
-                audio.play().then(() => {
-                    playBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
-                }).catch(err => console.warn("오디오 로드 실패:", err));
-            } else {
-                audio.pause();
-                playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
-            }
-        });
+            <div id="answer"></div>
 
-        document.getElementById('audio-back').addEventListener('click', () => {
-            audio.currentTime = Math.max(0, audio.currentTime - 10);
-        });
+            <button class="quiz-nav-btn" onclick="nextQuiz()">다음 문제 →</button>
+        </div>
+    </div>
+</main>
 
-        document.getElementById('audio-forward').addEventListener('click', () => {
-            audio.currentTime = Math.min(audio.duration || 0, audio.currentTime + 10);
-        });
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<script src="script.js"></script>
 
-        audio.addEventListener('loadedmetadata', () => {
-            timeTotal.textContent = formatTime(audio.duration);
-        });
-
-        audio.addEventListener('timeupdate', () => {
-            const current = audio.currentTime;
-            const total = audio.duration || 0;
-            timeCurrent.textContent = formatTime(current);
-            if (total > 0) progressBar.style.width = ((current / total) * 100) + '%';
-        });
-
-        progressBg.addEventListener('click', (e) => {
-            const rect = progressBg.getBoundingClientRect();
-            const clickX = e.clientX - rect.left;
-            if (audio.duration) audio.currentTime = (clickX / rect.width) * audio.duration;
-        });
-
-        audio.addEventListener('ended', () => {
-            playBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
-            progressBar.style.width = '100%';
-        });
-
-        toggleFuriganaBtn.addEventListener('click', () => {
-            isFuriganaHidden = !isFuriganaHidden;
-            if (isFuriganaHidden) {
-                contentContainer.classList.add('hide-furigana');
-                toggleFuriganaBtn.querySelector('span').textContent = "후리가나 보이기";
-                toggleFuriganaBtn.querySelector('i').className = "fa-solid fa-eye text-slate-400";
-            } else {
-                contentContainer.classList.remove('hide-furigana');
-                toggleFuriganaBtn.querySelector('span').textContent = "후리가나 숨기기";
-                toggleFuriganaBtn.querySelector('i').className = "fa-solid fa-eye-slash text-[#00ffd2]";
-            }
-        });
-
-        toggleTranslationBtn.addEventListener('click', () => {
-            isTranslationHidden = !isTranslationHidden;
-            if (isTranslationHidden) {
-                contentContainer.classList.add('hide-translation');
-                toggleTranslationBtn.querySelector('span').textContent = "한글 해설 보이기";
-                toggleTranslationBtn.querySelector('i').className = "fa-solid fa-language text-slate-400";
-            } else {
-                contentContainer.classList.remove('hide-translation');
-                toggleTranslationBtn.querySelector('span').textContent = "한글 해설 숨기기";
-                toggleTranslationBtn.querySelector('i').className = "fa-solid fa-language text-[#00ffd2]";
-            }
-        });
-
-        window.addEventListener('load', () => {
-            const focusNodes = [
-                document.getElementById('audio-back'),
-                document.getElementById('audio-play'),
-                document.getElementById('audio-forward'),
-                toggleFuriganaBtn,
-                toggleTranslationBtn
-            ];
-            let activeIndex = 1;
-            focusNodes[activeIndex].focus();
-            focusNodes[activeIndex].classList.add('focused-node');
-
-            document.addEventListener('keydown', (e) => {
-                focusNodes.forEach(n => n.classList.remove('focused-node'));
-                if(e.key === 'ArrowLeft') activeIndex = (activeIndex - 1 + focusNodes.length) % focusNodes.length;
-                else if(e.key === 'ArrowRight') activeIndex = (activeIndex + 1) % focusNodes.length;
-                else if(e.key === 'ArrowUp') activeIndex = Math.max(3, activeIndex);
-                else if(e.key === 'ArrowDown') activeIndex = 1;
-                else if(e.key === 'Enter') focusNodes[activeIndex].click();
-                
-                focusNodes[activeIndex].focus();
-                focusNodes[activeIndex].classList.add('focused-node');
-            });
-        });
-    </script>
 </body>
 </html>
