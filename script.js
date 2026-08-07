@@ -373,11 +373,13 @@ function updateWeekSelect(){
     
     let html = '<option value="all">전체보기</option>';
     sortedWeeks.forEach(w => {
-        // 숫자인 경우에만 '주차'를 붙이고, '완료/진행' 같은 문자는 그대로 표시
+        // --- [수정된 부분] ---
+        // 숫자인 경우에만 '주차'를 붙이고, 문자("완료", "진행")는 그대로 출력
         const isNumeric = !isNaN(Number(w));
         const label = isNumeric ? `${w}주차` : w;
 
         html += `<option value="${w}">${label}</option>`;
+        // ---------------------
     });
     
     const previousValue = weekSelect.value;
@@ -421,12 +423,10 @@ function parsePatternCSV(text){
         meaning2: cols[2]?.trim() || "",
         usage: cols[3]?.trim() || "",
         example1: cols[4]?.trim() || "",
-        reading1: cols[5]?.trim() || "",
-        translation1: cols[6]?.trim() || "",
-        example2: cols[7]?.trim() || "",
-        reading2: cols[8]?.trim() || "",
-        translation2: cols[9]?.trim() || "",
-        week: cols[10]?.trim() || ""
+        translation1: cols[5]?.trim() || "",
+        example2: cols[6]?.trim() || "",
+        translation2: cols[7]?.trim() || "",
+        week: cols[8]?.trim() || ""
     }));
 
 }
@@ -446,12 +446,10 @@ function parseCSV(text){
         meaning1: cols[2]?.trim() || "",
         meaning2: cols[3]?.trim() || "",
         example1: cols[4]?.trim() || "",
-        reading1: cols[5]?.trim() || "",
-        translation1: cols[6]?.trim() || "",
-        example2: cols[7]?.trim() || "",
-        reading2: cols[8]?.trim() || "",
-        translation2: cols[9]?.trim() || "",
-        week: cols[10]?.trim() || ""
+        translation1: cols[5]?.trim() || "",
+        example2: cols[6]?.trim() || "",
+        translation2: cols[7]?.trim() || "",
+        week: cols[8]?.trim() || ""
     }));
 
 }
