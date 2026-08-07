@@ -373,7 +373,11 @@ function updateWeekSelect(){
     
     let html = '<option value="all">전체보기</option>';
     sortedWeeks.forEach(w => {
-        html += `<option value="${w}">${w}주차</option>`;
+        // 숫자인 경우에만 '주차'를 붙이고, '완료/진행' 같은 문자는 그대로 표시
+        const isNumeric = !isNaN(Number(w));
+        const label = isNumeric ? `${w}주차` : w;
+
+        html += `<option value="${w}">${label}</option>`;
     });
     
     const previousValue = weekSelect.value;
